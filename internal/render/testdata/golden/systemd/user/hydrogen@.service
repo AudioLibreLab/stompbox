@@ -8,6 +8,8 @@ StopWhenUnneeded=yes
 [Service]
 Type=simple
 EnvironmentFile=%h/.config/stompbox/hydrogen/%i.env
-ExecStart=/usr/bin/hydrogen -n --driver jack -s ${H2_SONG}
+# pw-jack : la libjack système est celle de JACK2 (sans jackd) ;
+# il redirige vers la libjack de PipeWire.
+ExecStart=/usr/bin/pw-jack /usr/bin/hydrogen -n --driver jack -s ${H2_SONG}
 Restart=on-failure
 RestartSec=2

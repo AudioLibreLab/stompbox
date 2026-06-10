@@ -27,9 +27,9 @@ sessions:
         channels: 2
         looptime: 60
         midi_binding: midi/footswitch.slb   # Morningstar MC8 → SooperLooper
-    patchbay:
+#    patchbay:
       # À créer une fois : câbler dans qpwgraph, sauvegarder le patchbay ici.
       # Le câblage source est documenté dans patchbays/homestudio.raypatch.xml
       # (export ray-jackpatch de l'ancienne session RaySession).
-      file: patchbays/homestudio.qpwgraph
-      exclusive: false
+      #      file: patchbays/homestudio.qpwgraph
+      # exclusive: false
