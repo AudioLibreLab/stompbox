@@ -1,25 +1,35 @@
 # Manifeste Stompbox — la source de vérité des sessions du studio.
 # Les chemins relatifs sont résolus par rapport à ce fichier.
 # Après modification : stomp apply, puis stomp on <session>.
+#
+# Session migrée depuis ~/Ray Sessions/homestudio (RaySession) :
+# Scarlett 2i2 + pédalier Morningstar MC8 + ampli sim (Ratatouille/NAM).
 sessions:
-  bossa:
+  homestudio:
     apps:
       - kind: carla
-        name: clean
-        preset: presets/clean.carla
+        name: jazz
+        preset: presets/jazz.carxp     # carla-patchbay "Jazz" (Ratatouille)
         osc_tcp_port: 1455
-        gui: false
+        gui: true                      # ampli qu'on règle à la main → IHM visible
+      # - kind: carla
+      #   name: bass
+      #   preset: presets/bass.carxp
+      #   osc_tcp_port: 1456
+      #   gui: false
       - kind: hydrogen
-        name: bossa_groove
-        song: songs/bossa.h2song
+        name: groove
+        song: songs/homestudio.h2song
       - kind: sooperlooper
         name: looper
         osc_port: 9951
-        loops: 2
+        loops: 1
         channels: 2
         looptime: 60
-        # session: loops/bossa.slsess          # état initial optionnel
-        # midi_binding: midi/footswitch.slb    # pédalier MIDI optionnel
+        midi_binding: midi/footswitch.slb   # Morningstar MC8 → SooperLooper
     patchbay:
-      file: patchbays/bossa.qpwgraph
-      exclusive: true   # le câblage du fichier fait loi (qpwgraph -x)
+      # À créer une fois : câbler dans qpwgraph, sauvegarder le patchbay ici.
+      # Le câblage source est documenté dans patchbays/homestudio.raypatch.xml
+      # (export ray-jackpatch de l'ancienne session RaySession).
+      file: patchbays/homestudio.qpwgraph
+      exclusive: false

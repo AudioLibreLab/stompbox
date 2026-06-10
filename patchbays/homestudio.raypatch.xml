@@ -1,0 +1,323 @@
+<RAY-JACKPATCH>
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FL" to="Ardour_2:physical_audio_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FR" to="Ardour_2:physical_audio_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FL" to="Ardour_2:physical_audio_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="Ardour_2:physical_audio_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="HP Webcam HD 4310 St&#233;r&#233;o analogique:capture_FL" to="Ardour_2:physical_audio_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="HP Webcam HD 4310 St&#233;r&#233;o analogique:capture_FR" to="Ardour_2:physical_audio_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Meteor Lake-P HD Audio Controller Headset Microphone:capture_FL" to="Ardour_2:physical_audio_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Meteor Lake-P HD Audio Controller Headset Microphone:capture_FR" to="Ardour_2:physical_audio_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Midi-Bridge:Midi Through:(capture_0) Midi Through Port-0" to="Ardour_2:physical_midi_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Ardour_2:physical_midi_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_1) Morningstar MC8 MIDI 2" to="Ardour_2:physical_midi_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_2) Morningstar MC8 MIDI 3" to="Ardour_2:physical_midi_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_3) Morningstar MC8 MIDI 4" to="Ardour_2:physical_midi_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Ardour_2:Click/audio_out 1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="ardour_2" />
+  <connection from="Ardour_2:Click/audio_out 2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="ardour_2" />
+  <connection from="Ardour_2:auditioner/audio_out 2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="ardour_2" />
+  <connection from="Ardour_2:Master/audio_out 1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="ardour_2" />
+  <connection from="Ardour_2:Master/audio_out 2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="ardour_2" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Midi-Bridge:SooperLooper:(playback_0) sooperlooper" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="gx_head_amp:in_0" />
+  <connection from="gx_head_fx:out_0" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="gx_head_fx:out_1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="gx_head_amp:out_0" to="gx_head_fx:in_0" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_0) Morningstar MC8 MIDI 1" to="gx_head_amp:midi_in_1" />
+  <connection from="gx_head_fx:out_0" to="SooperLooper:common_in_1" nsm_client_to="sooperloop" />
+  <connection from="gx_head_fx:out_1" to="SooperLooper:common_in_2" nsm_client_to="sooperloop" />
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FL" to="GNOME Settings:input_FL-232" />
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FR" to="GNOME Settings:input_FR-234" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:monitor_FL" to="GNOME Settings:input_FL" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:monitor_FR" to="GNOME Settings:input_FR" />
+  <connection from="Midi-Bridge:Morningstar MC8 0:(capture_0) Morningstar MC8 MIDI 1" to="Midi-Bridge:SooperLooper:(playback_0) sooperlooper" />
+  <connection from="Midi-Bridge:Morningstar MC8 0:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="Ardour_2:Audio 2/audio_in 1" nsm_client_to="ardour_2" />
+  <connection from="Bumblebee II USB Microphone Mono:capture_MONO" to="Ardour_2:physical_audio_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="SooperLooper:common_out_1" to="Ardour_2:Audio 1/audio_in 1" nsm_client_from="sooperloop" nsm_client_to="ardour_2" />
+  <connection from="SooperLooper:common_out_2" to="Ardour_2:Audio 1/audio_in 1" nsm_client_from="sooperloop" nsm_client_to="ardour_2" />
+  <connection from="Ardour_2:Audio 1/audio_out 1" to="Ardour_2:Master/audio_in 1" nsm_client_from="ardour_2" nsm_client_to="ardour_2" />
+  <connection from="Ardour_2:Audio 1/audio_out 2" to="Ardour_2:Master/audio_in 2" nsm_client_from="ardour_2" nsm_client_to="ardour_2" />
+  <connection from="Ardour_2:Audio 2/audio_out 1" to="Ardour_2:Master/audio_in 1" nsm_client_from="ardour_2" nsm_client_to="ardour_2" />
+  <connection from="Ardour_2:Audio 2/audio_out 2" to="Ardour_2:Master/audio_in 2" nsm_client_from="ardour_2" nsm_client_to="ardour_2" />
+  <connection from="Hydrogen:out_L" to="audio controller St&#233;r&#233;o analogique:playback_FL" nsm_client_from="hydrogen" />
+  <connection from="Hydrogen:out_R" to="audio controller St&#233;r&#233;o analogique:playback_FR" nsm_client_from="hydrogen" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="Carla-Rack:audio-in1" nsm_client_to="rack" />
+  <connection from="Carla-Rack:audio-out1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="rack" />
+  <connection from="Carla-Rack:audio-out2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="rack" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="Carla-Rack:audio-in2" nsm_client_to="rack" />
+  <connection from="Midi-Bridge:Morningstar MC8 2:(capture_0) Morningstar MC8 MIDI 1" to="Midi-Bridge:SooperLooper:(playback_0) sooperlooper" />
+  <connection from="Midi-Bridge:Morningstar MC8 2:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="SooperLooper:common_out_1" to="Carla-Rack:audio-in1" nsm_client_from="sooperloop" nsm_client_to="rack" />
+  <connection from="SooperLooper:common_out_2" to="Carla-Rack:audio-in2" nsm_client_from="sooperloop" nsm_client_to="rack" />
+  <connection from="Midi-Bridge:Morningstar MC8 2:(capture_0) Morningstar MC8 MIDI 1" to="Ardour_2:physical_midi_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Midi-Bridge:Morningstar MC8 2:(capture_1) Morningstar MC8 MIDI 2" to="Ardour_2:physical_midi_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Midi-Bridge:Morningstar MC8 2:(capture_2) Morningstar MC8 MIDI 3" to="Ardour_2:physical_midi_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Midi-Bridge:Morningstar MC8 2:(capture_3) Morningstar MC8 MIDI 4" to="Ardour_2:physical_midi_input_monitor_enable" nsm_client_to="ardour_2" />
+  <connection from="Hydrogen:out_L" to="Ardour_2:Drum/audio_in 1" nsm_client_from="hydrogen" nsm_client_to="ardour_2" />
+  <connection from="Hydrogen:out_R" to="Ardour_2:Drum/audio_in 1" nsm_client_from="hydrogen" nsm_client_to="ardour_2" />
+  <connection from="Ardour_2:Drum/audio_out 1" to="Ardour_2:Master/audio_in 1" nsm_client_from="ardour_2" nsm_client_to="ardour_2" />
+  <connection from="Ardour_2:Drum/audio_out 2" to="Ardour_2:Master/audio_in 2" nsm_client_from="ardour_2" nsm_client_to="ardour_2" />
+  <connection from="Google Chrome-140:output_FL" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="Google Chrome-140:output_FR" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="SooperLooper:common_out_1" to="Carla-Patchbay_2:audio-in1" nsm_client_from="sooperloop" nsm_client_to="patchbay_2" />
+  <connection from="SooperLooper:common_out_2" to="Carla-Patchbay_2:audio-in2" nsm_client_from="sooperloop" nsm_client_to="patchbay_2" />
+  <connection from="Ardour_3:Audio 1/audio_out 1" to="Ardour_3:Master/audio_in 1" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Audio 1/audio_out 2" to="Ardour_3:Master/audio_in 2" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Audio 2/audio_out 1" to="Ardour_3:Master/audio_in 1" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Audio 2/audio_out 2" to="Ardour_3:Master/audio_in 2" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FL" to="Ardour_3:Audio 1/audio_in 1-1453" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Audio 1/audio_out 1-1454" to="Ardour_3:Master/audio_in 1" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Audio 1/audio_out 2-1455" to="Ardour_3:Master/audio_in 2" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Carla-Patchbay_2:audio-out1" to="Ardour_3:Audio 1/audio_in 1" nsm_client_to="ardour_3" nsm_client_from="patchbay_2" />
+  <connection from="Carla-Patchbay_2:audio-out2" to="Ardour_3:Audio 1/audio_in 1" nsm_client_to="ardour_3" nsm_client_from="patchbay_2" />
+  <connection from="Hydrogen:out_L" to="Ardour_3:Audio 2/audio_in 1" nsm_client_from="hydrogen" nsm_client_to="ardour_3" />
+  <connection from="Hydrogen:out_R" to="Ardour_3:Audio 2/audio_in 1" nsm_client_from="hydrogen" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Click/audio_out 1" to="Meteor Lake-P HD Audio Controller Speaker:playback_FL" nsm_client_from="ardour_3" />
+  <connection from="Ardour_3:Click/audio_out 2" to="Meteor Lake-P HD Audio Controller Speaker:playback_FR" nsm_client_from="ardour_3" />
+  <connection from="Ardour_3:auditioner/audio_out 2" to="Meteor Lake-P HD Audio Controller Speaker:playback_FR" nsm_client_from="ardour_3" />
+  <connection from="Ardour_3:Drum/audio_out 1" to="Ardour_3:Master/audio_in 1" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Drum/audio_out 2" to="Ardour_3:Master/audio_in 2" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Guitar rythm/audio_out 1" to="Ardour_3:Master/audio_in 1" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Guitar rythm/audio_out 2" to="Ardour_3:Master/audio_in 2" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Take11_Guitar rythm-1.1/audio_out 1" to="Ardour_3:Master/audio_in 1" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Take11_Guitar rythm-1.1/audio_out 2" to="Ardour_3:Master/audio_in 2" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FL" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FR" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="HP Webcam HD 4310 St&#233;r&#233;o analogique:capture_FL" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="HP Webcam HD 4310 St&#233;r&#233;o analogique:capture_FR" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FL" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Bumblebee II USB Microphone Mono:capture_MONO" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Meteor Lake-P HD Audio Controller Headset Microphone:capture_FL" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Meteor Lake-P HD Audio Controller Headset Microphone:capture_FR" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Midi-Bridge:Midi Through:(capture_0) Midi Through Port-0" to="Ardour_3:physical_midi_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Midi-Bridge:Morningstar MC8 0:(capture_0) Morningstar MC8 MIDI 1" to="Ardour_3:physical_midi_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Midi-Bridge:Morningstar MC8 0:(capture_1) Morningstar MC8 MIDI 2" to="Ardour_3:physical_midi_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Midi-Bridge:Morningstar MC8 0:(capture_2) Morningstar MC8 MIDI 3" to="Ardour_3:physical_midi_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Midi-Bridge:Morningstar MC8 0:(capture_3) Morningstar MC8 MIDI 4" to="Ardour_3:physical_midi_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Carla-Patchbay_2:audio-out1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="patchbay_2" />
+  <connection from="Carla-Patchbay_2:audio-out2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="patchbay_2" />
+  <connection from="Hydrogen:out_L" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="hydrogen" />
+  <connection from="Hydrogen:out_R" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="hydrogen" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="Carla-Patchbay_2:audio-in2" nsm_client_to="patchbay_2" />
+  <connection from="Google Chrome:output_FL" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="Google Chrome:output_FR" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="Carla-Patchbay_4:audio-in2" nsm_client_to="patchbay_4" />
+  <connection from="Carla-Patchbay_4:audio-out1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="patchbay_4" />
+  <connection from="Carla-Patchbay_4:audio-out2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Ardour_3:physical_midi_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_1) Morningstar MC8 MIDI 2" to="Ardour_3:physical_midi_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_2) Morningstar MC8 MIDI 3" to="Ardour_3:physical_midi_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_3) Morningstar MC8 MIDI 4" to="Ardour_3:physical_midi_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Click/audio_out 1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="ardour_3" />
+  <connection from="Ardour_3:Click/audio_out 2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="ardour_3" />
+  <connection from="Ardour_3:auditioner/audio_out 1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="ardour_3" />
+  <connection from="Ardour_3:auditioner/audio_out 2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="ardour_3" />
+  <connection from="Hydrogen:out_L" to="Ardour_3:Drum/audio_in 1" nsm_client_from="hydrogen" nsm_client_to="ardour_3" />
+  <connection from="Hydrogen:out_R" to="Ardour_3:Drum/audio_in 1" nsm_client_from="hydrogen" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Guitar rythm 1/audio_out 1" to="Ardour_3:Master/audio_in 1" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Guitar rythm 1/audio_out 2" to="Ardour_3:Master/audio_in 2" nsm_client_from="ardour_3" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Master/audio_out 1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="ardour_3" />
+  <connection from="Ardour_3:Master/audio_out 2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="ardour_3" />
+  <connection from="Carla-Patchbay_2:audio-out1" to="Ardour_3:Guitar rythm/audio_in 1" nsm_client_to="ardour_3" nsm_client_from="patchbay_2" />
+  <connection from="Carla-Patchbay_2:audio-out2" to="Ardour_3:Guitar rythm/audio_in 1" nsm_client_to="ardour_3" nsm_client_from="patchbay_2" />
+  <connection from="Videos:output_FL" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="Videos:output_FR" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="Hydrogen:out_L" to="Dell Universal Dock D6000 St&#233;r&#233;o analogique:playback_FL" nsm_client_from="hydrogen" />
+  <connection from="Hydrogen:out_R" to="Dell Universal Dock D6000 St&#233;r&#233;o analogique:playback_FR" nsm_client_from="hydrogen" />
+  <connection from="Dell Universal Dock D6000 St&#233;r&#233;o num&#233;rique (IEC958):capture_FL" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Dell Universal Dock D6000 St&#233;r&#233;o num&#233;rique (IEC958):capture_FR" to="Ardour_3:physical_audio_input_monitor_enable" nsm_client_to="ardour_3" />
+  <connection from="Ardour_3:Click/audio_out 1" to="Dell Universal Dock D6000 St&#233;r&#233;o analogique:playback_FL" nsm_client_from="ardour_3" />
+  <connection from="Ardour_3:Click/audio_out 2" to="Dell Universal Dock D6000 St&#233;r&#233;o analogique:playback_FR" nsm_client_from="ardour_3" />
+  <connection from="Ardour_3:auditioner/audio_out 1" to="Dell Universal Dock D6000 St&#233;r&#233;o analogique:playback_FL" nsm_client_from="ardour_3" />
+  <connection from="Google Chrome:output_FL" to="Dell Universal Dock D6000 St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="Google Chrome:output_FR" to="Dell Universal Dock D6000 St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="Google Chrome-131:output_FL" to="Dell Universal Dock D6000 St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="Google Chrome-131:output_FR" to="Dell Universal Dock D6000 St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="Midi-Bridge:Morningstar MC8 4:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="Midi-Bridge:Morningstar MC8 4:(capture_0) Morningstar MC8 MIDI 1" to="Midi-Bridge:SooperLooper:(playback_0) sooperlooper" />
+  <connection from="Midi-Bridge:USB Keystation 88es 0:(capture_0) USB Keystation 88es MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-4-2- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="Hydrogen:out_L" to="Meteor Lake-P HD Audio Controller Speaker:playback_FL" nsm_client_from="hydrogen" />
+  <connection from="Hydrogen:out_R" to="Meteor Lake-P HD Audio Controller Speaker:playback_FR" nsm_client_from="hydrogen" />
+  <connection from="Carla-Patchbay_4:audio-out2" to="SooperLooper:common_in_2" nsm_client_to="sooperloop" nsm_client_from="patchbay_4" />
+  <connection from="Carla-Patchbay_4:audio-out1" to="SooperLooper:common_in_1" nsm_client_to="sooperloop" nsm_client_from="patchbay_4" />
+  <connection from="SooperLooper:common_out_1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="sooperloop" />
+  <connection from="SooperLooper:common_out_2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="sooperloop" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-3-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-3-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Midi-Bridge:SooperLooper:(playback_0) sooperlooper" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-4-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-4-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="Hydrogen:out_L" to="Scarlett 2i2 3rd Gen Analog Stereo:playback_FL" nsm_client_from="hydrogen" />
+  <connection from="Hydrogen:out_R" to="Scarlett 2i2 3rd Gen Analog Stereo:playback_FR" nsm_client_from="hydrogen" />
+  <connection from="Scarlett 2i2 3rd Gen Analog Stereo:capture_FR" to="Carla-Patchbay_4:audio-in2" nsm_client_to="patchbay_4" />
+  <connection from="Carla-Patchbay_4:audio-out2" to="Scarlett 2i2 3rd Gen Analog Stereo:playback_FR" nsm_client_from="patchbay_4" />
+  <connection from="Carla-Patchbay_4:audio-out1" to="Scarlett 2i2 3rd Gen Analog Stereo:playback_FL" nsm_client_from="patchbay_4" />
+  <connection from="SooperLooper:common_out_1" to="Scarlett 2i2 3rd Gen Analog Stereo:playback_FL" nsm_client_from="sooperloop" />
+  <connection from="SooperLooper:common_out_2" to="Scarlett 2i2 3rd Gen Analog Stereo:playback_FR" nsm_client_from="sooperloop" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-3-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-3-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar MC8 3:(capture_0) Morningstar MC8 MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar MC8 3:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="Midi-Bridge:Morningstar MC8 3:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="Midi-Bridge:Morningstar MC8 3:(capture_0) Morningstar MC8 MIDI 1" to="Midi-Bridge:SooperLooper:(playback_0) sooperlooper" />
+  <connection from="Midi-Bridge:Morningstar MC8 2:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="Midi-Bridge:Morningstar MC8 2:(capture_0) Morningstar MC8 MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Chromium:output_FL" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="Chromium:output_FR" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="Midi-Bridge:Morningstar MC8 0:(capture_0) Morningstar MC8 MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar MC8 0:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FL" to="ardour:physical_audio_input_monitor_enable" />
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FL" to="ardour:Audio 1/audio_in 1" />
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FR" to="ardour:physical_audio_input_monitor_enable" />
+  <connection from="Meteor Lake-P HD Audio Controller SoundWire microphones:capture_FR" to="ardour:Audio 1/audio_in 1" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FL" to="ardour:physical_audio_input_monitor_enable" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="ardour:physical_audio_input_monitor_enable" />
+  <connection from="HP Webcam HD 4310 St&#233;r&#233;o analogique:capture_FL" to="ardour:physical_audio_input_monitor_enable" />
+  <connection from="HP Webcam HD 4310 St&#233;r&#233;o analogique:capture_FR" to="ardour:physical_audio_input_monitor_enable" />
+  <connection from="Bumblebee II USB Microphone Mono:capture_MONO" to="ardour:physical_audio_input_monitor_enable" />
+  <connection from="Meteor Lake-P HD Audio Controller Headset Microphone:capture_FL" to="ardour:physical_audio_input_monitor_enable" />
+  <connection from="Meteor Lake-P HD Audio Controller Headset Microphone:capture_FR" to="ardour:physical_audio_input_monitor_enable" />
+  <connection from="ardour:Click/audio_out 1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="ardour:Click/audio_out 2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="ardour:Master/audio_out 1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="ardour:Master/audio_out 2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="ardour:auditioner/audio_out 1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="ardour:auditioner/audio_out 2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="ardour:Audio 1/audio_out 1" to="ardour:Master/audio_in 1" />
+  <connection from="ardour:Audio 1/audio_out 2" to="ardour:Master/audio_in 2" />
+  <connection from="Midi-Bridge:Midi Through:(capture_0) Midi Through Port-0" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-4-3-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-4-3-1- full speed:(capture_1) Morningstar MC8 MIDI 2" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-4-3-1- full speed:(capture_2) Morningstar MC8 MIDI 3" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-4-3-1- full speed:(capture_3) Morningstar MC8 MIDI 4" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Carla-Patchbay_4:audio-out1" to="ardour:Audio 1/audio_in 1" nsm_client_from="patchbay_4" />
+  <connection from="Carla-Patchbay_4:audio-out2" to="ardour:Audio 1/audio_in 1" nsm_client_from="patchbay_4" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FL" to="ardour:Audio 1/audio_in 1" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-4-3-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="ardour:Backtrack/audio_out 1" to="ardour:Master/audio_in 1" />
+  <connection from="ardour:Backtrack/audio_out 2" to="ardour:Master/audio_in 2" />
+  <connection from="ardour:Audio 2/audio_out 1" to="ardour:Master/audio_in 1" />
+  <connection from="ardour:Audio 2/audio_out 2" to="ardour:Master/audio_in 2" />
+  <connection from="ardour:Guitar solo/audio_out 1" to="ardour:Master/audio_in 1" />
+  <connection from="ardour:Guitar solo/audio_out 2" to="ardour:Master/audio_in 2" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-7-4- full speed:(capture_0) Morningstar MC8 MIDI 1" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-7-4- full speed:(capture_1) Morningstar MC8 MIDI 2" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-7-4- full speed:(capture_2) Morningstar MC8 MIDI 3" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-7-4- full speed:(capture_3) Morningstar MC8 MIDI 4" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-7-4- full speed:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-7-4- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="Carla-Patchbay_4:audio-out1" to="ardour:Guitar solo/audio_in 1" nsm_client_from="patchbay_4" />
+  <connection from="Carla-Patchbay_4:audio-out2" to="ardour:Guitar solo/audio_in 1" nsm_client_from="patchbay_4" />
+  <connection from="Google Chrome-356:output_FL" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="Google Chrome-356:output_FR" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="Google Chrome-356:output_FL" to="ardour:Backtrack/audio_in 1" />
+  <connection from="Google Chrome-356:output_FR" to="ardour:Backtrack/audio_in 1" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-2-4- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-2-4- full speed:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-2-4- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-2-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-2-1- full speed:(capture_1) Morningstar MC8 MIDI 2" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-2-1- full speed:(capture_2) Morningstar MC8 MIDI 3" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-2-1- full speed:(capture_3) Morningstar MC8 MIDI 4" to="ardour:physical_midi_input_monitor_enable" />
+  <connection from="ardour:Take79_Guitar solo-1.1/audio_out 1" to="ardour:Master/audio_in 1" />
+  <connection from="ardour:Take79_Guitar solo-1.1/audio_out 2" to="ardour:Master/audio_in 2" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-2-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-2-1- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar MC8 1:(capture_0) Morningstar MC8 MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar MC8 1:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="VLC media player (LibVLC 3.0.20):output_FL" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" />
+  <connection from="VLC media player (LibVLC 3.0.20):output_FR" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" />
+  <connection from="Midi-Bridge:Morningstar MC8 1:(capture_0) Morningstar MC8 MIDI 1" to="Midi-Bridge:SooperLooper:(playback_0) sooperlooper" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_0) Morningstar MC8 MIDI 1" to="Carla-Patchbay_4:events-in" nsm_client_to="patchbay_4" />
+  <connection from="Midi-Bridge:Morningstar Engineering Morningstar MC8 at usb-0000:00:14-0-1-2- full speed:(capture_0) Morningstar MC8 MIDI 1" to="midi2osc:midi_in" />
+  <connection from="Midi-Bridge:Morningstar MC8 1:(capture_0) Morningstar MC8 MIDI 1" to="Hydrogen-midi:RX" />
+  <connection from="Meteor Lake-P HD Audio Controller Headphones:monitor_FL" to="GNOME Settings:input_FL" />
+  <connection from="Meteor Lake-P HD Audio Controller Headphones:monitor_FR" to="GNOME Settings:input_FR" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FL" to="GNOME Settings:input_FL-284" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FR" to="GNOME Settings:input_FR-286" />
+  <connection from="Hydrogen:out_L" to="XR18 Pro:playback_AUX0" nsm_client_from="hydrogen" />
+  <connection from="Hydrogen:out_R" to="XR18 Pro:playback_AUX1" nsm_client_from="hydrogen" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FL" to="Carla-Patchbay_5:audio-in1" nsm_client_to="patchbay_5" />
+  <connection from="Carla-Patchbay_5:audio-out1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="patchbay_5" />
+  <connection from="Carla-Patchbay_5:audio-out2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="patchbay_5" />
+  <connection from="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:capture_FL" to="Carla-Patchbay_6:audio-in1" nsm_client_to="patchbay_6" />
+  <connection from="Carla-Patchbay_6:audio-out1" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FL" nsm_client_from="patchbay_6" />
+  <connection from="Carla-Patchbay_6:audio-out2" to="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique:playback_FR" nsm_client_from="patchbay_6" />
+  <graph>
+    <group name="Scarlett 2i2 3rd Gen St&#233;r&#233;o analogique">
+      <in_port name="playback_FL" />
+      <in_port name="playback_FR" />
+      <out_port name="capture_FL" />
+      <out_port name="capture_FR" />
+      <out_port name="monitor_FL" />
+      <out_port name="monitor_FR" />
+    </group>
+    <group name="Dell Universal Dock D6000 St&#233;r&#233;o num&#233;rique (IEC958)">
+      <in_port name="playback_FL" />
+      <in_port name="playback_FR" />
+      <out_port name="capture_FL" />
+      <out_port name="capture_FR" />
+      <out_port name="monitor_FL" />
+      <out_port name="monitor_FR" />
+    </group>
+    <group name="Meteor Lake-P HD Audio Controller Headphones">
+      <in_port name="playback_FL" />
+      <in_port name="playback_FR" />
+      <out_port name="monitor_FL" />
+      <out_port name="monitor_FR" />
+    </group>
+    <group name="Meteor Lake-P HD Audio Controller Speaker">
+      <in_port name="playback_FL" />
+      <in_port name="playback_FR" />
+      <out_port name="monitor_FL" />
+      <out_port name="monitor_FR" />
+    </group>
+    <group name="Meteor Lake-P HD Audio Controller HDMI / DisplayPort 1 Output">
+      <in_port name="playback_FL" />
+      <in_port name="playback_FR" />
+      <out_port name="monitor_FL" />
+      <out_port name="monitor_FR" />
+    </group>
+    <group name="Meteor Lake-P HD Audio Controller HDMI / DisplayPort 2 Output">
+      <in_port name="playback_FL" />
+      <in_port name="playback_FR" />
+      <out_port name="monitor_FL" />
+      <out_port name="monitor_FR" />
+    </group>
+    <group name="Meteor Lake-P HD Audio Controller HDMI / DisplayPort 3 Output">
+      <in_port name="playback_FL" />
+      <in_port name="playback_FR" />
+      <out_port name="monitor_FL" />
+      <out_port name="monitor_FR" />
+    </group>
+    <group name="Midi-Bridge">
+      <in_port name="Midi Through:(playback_0) Midi Through Port-0" />
+      <out_port name="Midi Through:(capture_0) Midi Through Port-0" />
+    </group>
+    <group name="midi2osc">
+      <in_port name="midi_in" />
+    </group>
+    <group name="Carla-Patchbay_5" nsm_client="patchbay_5">
+      <in_port name="audio-in1" />
+      <in_port name="audio-in2" />
+      <in_port name="events-in" />
+      <out_port name="audio-out1" />
+      <out_port name="audio-out2" />
+      <out_port name="events-out" />
+    </group>
+    <group name="Meteor Lake-P HD Audio Controller SoundWire microphones">
+      <out_port name="capture_FL" />
+      <out_port name="capture_FR" />
+    </group>
+    <group name="HP Webcam HD 4310 St&#233;r&#233;o analogique">
+      <out_port name="capture_FL" />
+      <out_port name="capture_FR" />
+    </group>
+    <group name="Meteor Lake-P HD Audio Controller Headset Microphone">
+      <out_port name="capture_FL" />
+      <out_port name="capture_FR" />
+    </group>
+  </graph>
+</RAY-JACKPATCH>

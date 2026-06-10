@@ -92,7 +92,7 @@ Options CLI vérifiées sur la machine cible (2026-06) :
 | App | Réalité CLI |
 |-----|-------------|
 | qpwgraph | Pas de flag `-p` : le fichier patchbay est **positionnel**. `qpwgraph -m -a [-x] bossa.qpwgraph` |
-| Carla | Pas de binaire `carla-headless` : `carla --no-gui`. Port OSC via env `CARLA_OSC_TCP_PORT` / `CARLA_OSC_UDP_PORT` |
+| Carla | Pas de binaire `carla-headless` : `carla --no-gui`. Port OSC via env `CARLA_OSC_TCP_PORT` / `CARLA_OSC_UDP_PORT`. Les projets réels sont au format **`.carxp`** (pas `.carla`) — ceux de l'ancienne session RaySession sont sauvés par `carla-patchbay` |
 | Hydrogen | `-s fichier.h2song`, ajouter `-n` (pas de splash) et `--driver jack` |
 | SooperLooper | Moteur headless natif : `sooperlooper -q -j sl_<nom> -p <port> -l <loops> -c <ch> -t <sec> [-L session] [-m binding]`. IHM séparée : `slgui` |
 
@@ -141,8 +141,12 @@ dans `~/.config/systemd/user/` et vérifier :
 - [ ] `qpwgraph -m -a` survit-il sans tray système sous le compositeur
       Wayland cible ? (GNOME Wayland n'a pas de tray natif ; KDE oui)
 - [ ] `CARLA_OSC_TCP_PORT` est-il honoré par le Carla installé ?
-- [ ] `StopWhenUnneeded=yes` arrête-t-il bien tout au `stop bossa.target` ?
+- [ ] `carla --no-gui presets/jazz.carxp` charge-t-il bien un projet sauvé
+      par `carla-patchbay` (sessions RaySession migrées) ?
+- [ ] `StopWhenUnneeded=yes` arrête-t-il bien tout au `stop <session>.target` ?
 - [ ] `slgui` s'attache/se détache du moteur sans interrompre les boucles ?
+- [ ] Créer `patchbays/homestudio.qpwgraph` : câbler une fois dans qpwgraph
+      en suivant `patchbays/homestudio.raypatch.xml`, sauvegarder, commiter.
 
 Les units validés deviennent les gabarits de la phase 1.
 
@@ -161,6 +165,17 @@ déboguer. Tests golden sur le rendu des units (YAML → texte).
 - Pas de toolchain Node : tout en `embed.FS`, stdlib `net/http`
 - `import-environment` Wayland au démarrage du serveur
 - Cas d'usage cible : tablette posée sur l'ampli
+
+### Phase 1.5 — migration RaySession (backlog)
+
+- `stomp import-raypatch <patch.xml>` : convertir les connexions
+  ray-jackpatch (ex: `patchbays/homestudio.raypatch.xml`) en fichier
+  `.qpwgraph`, pour migrer les anciennes sessions sans recâbler à la main.
+- Kinds futurs identifiés dans les sessions RaySession existantes :
+  `ardour`, `midi2osc`.
+- L'état SooperLooper (`.slsess` + wav des boucles) reste hors Git :
+  c'est de l'état de jeu, pas de la configuration. Seul le binding MIDI
+  (`.slb`, pédalier Morningstar MC8) est versionné.
 
 ### Phase 3 — affinage
 

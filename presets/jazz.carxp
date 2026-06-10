@@ -1,0 +1,922 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE CARLA-PROJECT>
+<CARLA-PROJECT VERSION='2.5'>
+ <EngineSettings>
+  <ForceStereo>false</ForceStereo>
+  <PreferPluginBridges>false</PreferPluginBridges>
+  <PreferUiBridges>true</PreferUiBridges>
+  <UIsAlwaysOnTop>false</UIsAlwaysOnTop>
+  <MaxParameters>200</MaxParameters>
+  <UIBridgesTimeout>4000</UIBridgesTimeout>
+ </EngineSettings>
+
+ <Transport>
+  <BeatsPerMinute>120</BeatsPerMinute>
+ </Transport>
+
+ <!-- Calf Equalizer 12 Band -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Calf Equalizer 12 Band</Name>
+   <URI>http://calf.sourceforge.net/plugins/Equalizer12Band</URI>
+  </Info>
+
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x3f1</Options>
+
+   <Parameter>
+    <Index>0</Index>
+    <Name>Bypass</Name>
+    <Symbol>bypass</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>1</Index>
+    <Name>Input Gain</Name>
+    <Symbol>level_in</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>2</Index>
+    <Name>Output Gain</Name>
+    <Symbol>level_out</Symbol>
+    <Value>1.39474391937256</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>11</Index>
+    <Name>HP Active</Name>
+    <Symbol>hp_active</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>12</Index>
+    <Name>HP Freq</Name>
+    <Symbol>hp_freq</Symbol>
+    <Value>30</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>13</Index>
+    <Name>HP Mode</Name>
+    <Symbol>hp_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>14</Index>
+    <Name>HP Q</Name>
+    <Symbol>hp_q</Symbol>
+    <Value>0.707000017166138</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>15</Index>
+    <Name>LP Active</Name>
+    <Symbol>lp_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>16</Index>
+    <Name>LP Freq</Name>
+    <Symbol>lp_freq</Symbol>
+    <Value>18000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>17</Index>
+    <Name>LP Mode</Name>
+    <Symbol>lp_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>18</Index>
+    <Name>LP Q</Name>
+    <Symbol>lp_q</Symbol>
+    <Value>0.707000017166138</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>19</Index>
+    <Name>LS Active</Name>
+    <Symbol>ls_active</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>20</Index>
+    <Name>Level L</Name>
+    <Symbol>ls_level</Symbol>
+    <Value>0.0675453469157219</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>21</Index>
+    <Name>Freq L</Name>
+    <Symbol>ls_freq</Symbol>
+    <Value>100</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>22</Index>
+    <Name>LS Q</Name>
+    <Symbol>ls_q</Symbol>
+    <Value>0.281461775302887</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>23</Index>
+    <Name>HS Active</Name>
+    <Symbol>hs_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>24</Index>
+    <Name>Level H</Name>
+    <Symbol>hs_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>25</Index>
+    <Name>Freq H</Name>
+    <Symbol>hs_freq</Symbol>
+    <Value>5000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>26</Index>
+    <Name>HS Q</Name>
+    <Symbol>hs_q</Symbol>
+    <Value>0.707000017166138</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>27</Index>
+    <Name>F1 Active</Name>
+    <Symbol>p1_active</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>28</Index>
+    <Name>Level 1</Name>
+    <Symbol>p1_level</Symbol>
+    <Value>0.264254510402679</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>29</Index>
+    <Name>Freq 1</Name>
+    <Symbol>p1_freq</Symbol>
+    <Value>60</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>30</Index>
+    <Name>Q 1</Name>
+    <Symbol>p1_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>31</Index>
+    <Name>F2 Active</Name>
+    <Symbol>p2_active</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>32</Index>
+    <Name>Level 2</Name>
+    <Symbol>p2_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>33</Index>
+    <Name>Freq 2</Name>
+    <Symbol>p2_freq</Symbol>
+    <Value>120</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>34</Index>
+    <Name>Q 2</Name>
+    <Symbol>p2_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>35</Index>
+    <Name>F3 Active</Name>
+    <Symbol>p3_active</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>36</Index>
+    <Name>Level 3</Name>
+    <Symbol>p3_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>37</Index>
+    <Name>Freq 3</Name>
+    <Symbol>p3_freq</Symbol>
+    <Value>250</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>38</Index>
+    <Name>Q 3</Name>
+    <Symbol>p3_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>39</Index>
+    <Name>F4 Active</Name>
+    <Symbol>p4_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>40</Index>
+    <Name>Level 4</Name>
+    <Symbol>p4_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>41</Index>
+    <Name>Freq 4</Name>
+    <Symbol>p4_freq</Symbol>
+    <Value>500</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>42</Index>
+    <Name>Q 4</Name>
+    <Symbol>p4_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>43</Index>
+    <Name>F5 Active</Name>
+    <Symbol>p5_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>44</Index>
+    <Name>Level 5</Name>
+    <Symbol>p5_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>45</Index>
+    <Name>Freq 5</Name>
+    <Symbol>p5_freq</Symbol>
+    <Value>1000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>46</Index>
+    <Name>Q 5</Name>
+    <Symbol>p5_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>47</Index>
+    <Name>F6 Active</Name>
+    <Symbol>p6_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>48</Index>
+    <Name>Level 6</Name>
+    <Symbol>p6_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>49</Index>
+    <Name>Freq 6</Name>
+    <Symbol>p6_freq</Symbol>
+    <Value>2000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>50</Index>
+    <Name>Q 6</Name>
+    <Symbol>p6_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>51</Index>
+    <Name>F7 Active</Name>
+    <Symbol>p7_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>52</Index>
+    <Name>Level 7</Name>
+    <Symbol>p7_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>53</Index>
+    <Name>Freq 7</Name>
+    <Symbol>p7_freq</Symbol>
+    <Value>4000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>54</Index>
+    <Name>Q 7</Name>
+    <Symbol>p7_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>55</Index>
+    <Name>F8 Active</Name>
+    <Symbol>p8_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>56</Index>
+    <Name>Level 8</Name>
+    <Symbol>p8_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>57</Index>
+    <Name>Freq 8</Name>
+    <Symbol>p8_freq</Symbol>
+    <Value>8000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>58</Index>
+    <Name>Q 8</Name>
+    <Symbol>p8_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>59</Index>
+    <Name>Individual Filters</Name>
+    <Symbol>individuals</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>60</Index>
+    <Name>Zoom</Name>
+    <Symbol>zoom</Symbol>
+    <Value>0.0625</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>61</Index>
+    <Name>Analyzer Active</Name>
+    <Symbol>analyzer</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>62</Index>
+    <Name>Analyzer Mode</Name>
+    <Symbol>analyzer_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+  </Data>
+ </Plugin>
+
+ <!-- Neural Amp Modeler -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Neural Amp Modeler</Name>
+   <URI>http://github.com/mikeoliphant/neural-amp-modeler-lv2</URI>
+  </Info>
+
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x0</Options>
+
+   <Parameter>
+    <Index>0</Index>
+    <Name>Input Lvl</Name>
+    <Symbol>input_level</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>1</Index>
+    <Name>Output Lvl</Name>
+    <Symbol>output_level</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>2</Index>
+    <Name>Quality</Name>
+    <Symbol>quality_scale</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <CustomData>
+    <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
+    <Key>http://github.com/mikeoliphant/neural-amp-modeler-lv2#model</Key>
+    <Value>Roland JC 120B Jazz Chorus_ Bright Off, Royer 101.nam</Value>
+   </CustomData>
+  </Data>
+ </Plugin>
+
+ <!-- Calf Equalizer 12 Band -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Calf Equalizer 12 Band (2)</Name>
+   <URI>http://calf.sourceforge.net/plugins/Equalizer12Band</URI>
+  </Info>
+
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x3f1</Options>
+
+   <Parameter>
+    <Index>0</Index>
+    <Name>Bypass</Name>
+    <Symbol>bypass</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>1</Index>
+    <Name>Input Gain</Name>
+    <Symbol>level_in</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>2</Index>
+    <Name>Output Gain</Name>
+    <Symbol>level_out</Symbol>
+    <Value>0.435275197029114</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>11</Index>
+    <Name>HP Active</Name>
+    <Symbol>hp_active</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>12</Index>
+    <Name>HP Freq</Name>
+    <Symbol>hp_freq</Symbol>
+    <Value>66.1345443725586</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>13</Index>
+    <Name>HP Mode</Name>
+    <Symbol>hp_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>14</Index>
+    <Name>HP Q</Name>
+    <Symbol>hp_q</Symbol>
+    <Value>0.707000017166138</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>15</Index>
+    <Name>LP Active</Name>
+    <Symbol>lp_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>16</Index>
+    <Name>LP Freq</Name>
+    <Symbol>lp_freq</Symbol>
+    <Value>18000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>17</Index>
+    <Name>LP Mode</Name>
+    <Symbol>lp_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>18</Index>
+    <Name>LP Q</Name>
+    <Symbol>lp_q</Symbol>
+    <Value>0.707000017166138</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>19</Index>
+    <Name>LS Active</Name>
+    <Symbol>ls_active</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>20</Index>
+    <Name>Level L</Name>
+    <Symbol>ls_level</Symbol>
+    <Value>0.291991829872131</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>21</Index>
+    <Name>Freq L</Name>
+    <Symbol>ls_freq</Symbol>
+    <Value>178.187927246094</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>22</Index>
+    <Name>LS Q</Name>
+    <Symbol>ls_q</Symbol>
+    <Value>0.281461775302887</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>23</Index>
+    <Name>HS Active</Name>
+    <Symbol>hs_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>24</Index>
+    <Name>Level H</Name>
+    <Symbol>hs_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>25</Index>
+    <Name>Freq H</Name>
+    <Symbol>hs_freq</Symbol>
+    <Value>5000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>26</Index>
+    <Name>HS Q</Name>
+    <Symbol>hs_q</Symbol>
+    <Value>0.707000017166138</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>27</Index>
+    <Name>F1 Active</Name>
+    <Symbol>p1_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>28</Index>
+    <Name>Level 1</Name>
+    <Symbol>p1_level</Symbol>
+    <Value>0.264254510402679</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>29</Index>
+    <Name>Freq 1</Name>
+    <Symbol>p1_freq</Symbol>
+    <Value>60</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>30</Index>
+    <Name>Q 1</Name>
+    <Symbol>p1_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>31</Index>
+    <Name>F2 Active</Name>
+    <Symbol>p2_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>32</Index>
+    <Name>Level 2</Name>
+    <Symbol>p2_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>33</Index>
+    <Name>Freq 2</Name>
+    <Symbol>p2_freq</Symbol>
+    <Value>120</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>34</Index>
+    <Name>Q 2</Name>
+    <Symbol>p2_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>35</Index>
+    <Name>F3 Active</Name>
+    <Symbol>p3_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>36</Index>
+    <Name>Level 3</Name>
+    <Symbol>p3_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>37</Index>
+    <Name>Freq 3</Name>
+    <Symbol>p3_freq</Symbol>
+    <Value>250</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>38</Index>
+    <Name>Q 3</Name>
+    <Symbol>p3_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>39</Index>
+    <Name>F4 Active</Name>
+    <Symbol>p4_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>40</Index>
+    <Name>Level 4</Name>
+    <Symbol>p4_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>41</Index>
+    <Name>Freq 4</Name>
+    <Symbol>p4_freq</Symbol>
+    <Value>500</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>42</Index>
+    <Name>Q 4</Name>
+    <Symbol>p4_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>43</Index>
+    <Name>F5 Active</Name>
+    <Symbol>p5_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>44</Index>
+    <Name>Level 5</Name>
+    <Symbol>p5_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>45</Index>
+    <Name>Freq 5</Name>
+    <Symbol>p5_freq</Symbol>
+    <Value>1000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>46</Index>
+    <Name>Q 5</Name>
+    <Symbol>p5_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>47</Index>
+    <Name>F6 Active</Name>
+    <Symbol>p6_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>48</Index>
+    <Name>Level 6</Name>
+    <Symbol>p6_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>49</Index>
+    <Name>Freq 6</Name>
+    <Symbol>p6_freq</Symbol>
+    <Value>2000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>50</Index>
+    <Name>Q 6</Name>
+    <Symbol>p6_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>51</Index>
+    <Name>F7 Active</Name>
+    <Symbol>p7_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>52</Index>
+    <Name>Level 7</Name>
+    <Symbol>p7_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>53</Index>
+    <Name>Freq 7</Name>
+    <Symbol>p7_freq</Symbol>
+    <Value>4000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>54</Index>
+    <Name>Q 7</Name>
+    <Symbol>p7_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>55</Index>
+    <Name>F8 Active</Name>
+    <Symbol>p8_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>56</Index>
+    <Name>Level 8</Name>
+    <Symbol>p8_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>57</Index>
+    <Name>Freq 8</Name>
+    <Symbol>p8_freq</Symbol>
+    <Value>8000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>58</Index>
+    <Name>Q 8</Name>
+    <Symbol>p8_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>59</Index>
+    <Name>Individual Filters</Name>
+    <Symbol>individuals</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>60</Index>
+    <Name>Zoom</Name>
+    <Symbol>zoom</Symbol>
+    <Value>0.0625</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>61</Index>
+    <Name>Analyzer Active</Name>
+    <Symbol>analyzer</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>62</Index>
+    <Name>Analyzer Mode</Name>
+    <Symbol>analyzer_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+  </Data>
+ </Plugin>
+
+ <Patchbay>
+  <Connection>
+   <Source>Calf Equalizer 12 Band:Out L</Source>
+   <Target>Audio Output:Left</Target>
+  </Connection>
+  <Connection>
+   <Source>Calf Equalizer 12 Band:Out R</Source>
+   <Target>Audio Output:Right</Target>
+  </Connection>
+  <Connection>
+   <Source>Neural Amp Modeler:Output</Source>
+   <Target>Calf Equalizer 12 Band:In L</Target>
+  </Connection>
+  <Connection>
+   <Source>Neural Amp Modeler:Output</Source>
+   <Target>Calf Equalizer 12 Band:In R</Target>
+  </Connection>
+  <Connection>
+   <Source>Audio Input:Left</Source>
+   <Target>Calf Equalizer 12 Band (2):In L</Target>
+  </Connection>
+  <Connection>
+   <Source>Audio Input:Left</Source>
+   <Target>Calf Equalizer 12 Band (2):In R</Target>
+  </Connection>
+  <Connection>
+   <Source>Calf Equalizer 12 Band (2):Out L</Source>
+   <Target>Neural Amp Modeler:Input</Target>
+  </Connection>
+  <Connection>
+   <Source>Calf Equalizer 12 Band (2):Out R</Source>
+   <Target>Neural Amp Modeler:Input</Target>
+  </Connection>
+  <Positions>
+   <Position x1="1598" y1="1236" pluginId="2">
+    <Name>Calf Equalizer 12 Band (2)</Name>
+   </Position>
+   <Position x1="1862" y1="1034" pluginId="1">
+    <Name>Neural Amp Modeler</Name>
+   </Position>
+   <Position x1="1729" y1="1617" pluginId="0">
+    <Name>Calf Equalizer 12 Band</Name>
+   </Position>
+   <Position x1="1406" y1="1142" x2="1952" y2="1200">
+    <Name>Audio Input</Name>
+   </Position>
+  </Positions>
+ </Patchbay>
+
+ <ExternalPatchbay>
+  <Connection>
+   <Source>Scarlett 2i2 3rd Gen Stéréo analogique:capture_FL</Source>
+   <Target>Carla-Patchbay_5:audio-in1</Target>
+  </Connection>
+  <Connection>
+   <Source>Carla-Patchbay_5:audio-out1</Source>
+   <Target>Scarlett 2i2 3rd Gen Stéréo analogique:playback_FL</Target>
+  </Connection>
+  <Connection>
+   <Source>Carla-Patchbay_5:audio-out2</Source>
+   <Target>Scarlett 2i2 3rd Gen Stéréo analogique:playback_FR</Target>
+  </Connection>
+ </ExternalPatchbay>
+</CARLA-PROJECT>
