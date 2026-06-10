@@ -3,3 +3,6 @@
 
 # Sortie de `stomp render`
 /rendered/
+
+# Autosaves Hydrogen (état, pas de la config)
+.*.autosave.h2song
