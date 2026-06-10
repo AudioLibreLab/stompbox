@@ -1,0 +1,25 @@
+# Manifeste Stompbox — la source de vérité des sessions du studio.
+# Les chemins relatifs sont résolus par rapport à ce fichier.
+# Après modification : stomp apply, puis stomp on <session>.
+sessions:
+  bossa:
+    apps:
+      - kind: carla
+        name: clean
+        preset: presets/clean.carla
+        osc_tcp_port: 1455
+        gui: false
+      - kind: hydrogen
+        name: bossa_groove
+        song: songs/bossa.h2song
+      - kind: sooperlooper
+        name: looper
+        osc_port: 9951
+        loops: 2
+        channels: 2
+        looptime: 60
+        # session: loops/bossa.slsess          # état initial optionnel
+        # midi_binding: midi/footswitch.slb    # pédalier MIDI optionnel
+    patchbay:
+      file: patchbays/bossa.qpwgraph
+      exclusive: true   # le câblage du fichier fait loi (qpwgraph -x)

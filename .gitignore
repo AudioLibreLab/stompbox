@@ -1,0 +1,5 @@
+# Binaire local
+/stomp
+
+# Sortie de `stomp render`
+/rendered/
