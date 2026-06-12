@@ -59,3 +59,16 @@ sessions:
         loops: 1
         channels: 2
         looptime: 60
+
+  # Rock profile: high-gain amp sim (NAM + IR via Ratatouille) with
+  # Element instead of Carla as the plugin host (see presets/rock.els).
+  rock:
+    apps:
+      - kind: element
+        # name omitted → default "rock-element"
+        preset: presets/rock.els
+      - kind: sooperlooper
+        osc_port: 9954
+        loops: 1
+        channels: 2
+        looptime: 60

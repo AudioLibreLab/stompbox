@@ -63,6 +63,9 @@ sessions:
         name: clean            # optional — default: <session>-<kind> (bossa-carla)
         preset: presets/clean.carla
         osc_tcp_port: 1455     # OSC TCP control (CARLA_OSC_TCP_PORT env)
+      - kind: element          # plugin host alternative to carla, no headless mode
+        name: rock_element     # element <preset> — window is the UI (like qpwgraph)
+        preset: presets/rock.els
       - kind: hydrogen         # hydrogen -n --driver jack -s <song>
         name: bossa_groove
         song: songs/bossa.h2song

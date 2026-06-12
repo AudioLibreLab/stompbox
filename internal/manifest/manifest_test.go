@@ -119,6 +119,15 @@ sessions:
 `,
 			wantErr: "'preset' field required",
 		},
+		"missing element preset": {
+			yaml: `
+sessions:
+  s:
+    apps:
+      - {kind: element, name: x}
+`,
+			wantErr: "'preset' field required",
+		},
 		"missing hydrogen song": {
 			yaml: `
 sessions:

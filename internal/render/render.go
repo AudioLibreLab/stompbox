@@ -149,6 +149,12 @@ func envFile(m *manifest.Manifest, a *manifest.App) (File, error) {
 		}
 		return File{Path: "stompbox/carla/" + a.Name + ".env", Content: envContent(pairs...)}, nil
 
+	case manifest.KindElement:
+		return File{
+			Path:    "stompbox/element/" + a.Name + ".env",
+			Content: envContent(kv{"ELEMENT_SESSION", m.Resolve(a.Preset)}),
+		}, nil
+
 	case manifest.KindHydrogen:
 		return File{
 			Path:    "stompbox/hydrogen/" + a.Name + ".env",

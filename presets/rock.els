@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- Rock profile: Gx_distortion -> Ratatouille (NAM amp + IR cab) -> Calf Reverb.
+     Hand-authored topology (Element has no headless mode, so element@.service
+     runs the GUI directly, bound to the graphical session like qpwgraph).
+     Plugin states are left at their defaults: open this session once in
+     Element, dial in Ratatouille's NAM model + IR and the distortion/reverb
+     settings, then save from the UI -- same "create once" convention as the
+     qpwgraph patchbays. Internal wiring is mono up to the reverb, which opens
+     the signal to stereo. -->
+<Session version="1" name="rock" tempo="120.0" notes="" beatsPerBar="4" beatDivisor="2">
+  <graphs active="0">
+    <Node version="1" type="Graph" uuid="cd3ef738fd2e44728797b51431567ac6"
+          name="Graph" bypass="0" persistent="1" renderMode="single" keyStart="0"
+          keyEnd="127" transpose="0" delayCompensation="0" tempo="120.0">
+      <nodes>
+        <Node id="1" format="Internal" identifier="audio.input" type="plugin"
+              name="" pluginIdentifierString="Internal--da9d27b2-0"
+              uuid="73403a33c8e64dbf9d9bee242cb8ec6a" bypass="0" persistent="1"
+              renderMode="single" keyStart="0" keyEnd="127" transpose="0"
+              delayCompensation="0.0" tempo="120.0" x="40.0" y="40.0"
+              midiProgram="0" globalMidiPrograms="0" midiProgramsEnabled="0"
+              mute="0" muteInput="0" midiProgramsState="" oversamplingFactor="1"
+              enabled="1">
+          <nodes/>
+          <scripts/>
+          <ui>
+            <Block/>
+          </ui>
+          <ports>
+            <Port index="0" channel="0" type="audio" name="Audio Out 1" symbol="audio_out_1"
+                  flow="output" hiddenOnBlock="0"/>
+            <Port index="1" channel="1" type="audio" name="Audio Out 2" symbol="audio_out_2"
+                  flow="output" hiddenOnBlock="0"/>
+          </ports>
+        </Node>
+
+        <!-- Gx_distortion at the front of the chain: the higher-gain push for rock. -->
+        <Node id="2" format="LV2" identifier="http://guitarix.sourceforge.net/plugins/gx_distortion#_distortion"
+              type="plugin" name="Gx_distortion" pluginIdentifierString="LV2-Gx_distortion-ef47708f-ef47708f"
+              uuid="af8e285363c24c1e8148bf7d04f0ca11" bypass="0" persistent="1"
+              renderMode="single" keyStart="0" keyEnd="127" transpose="0"
+              delayCompensation="0.0" tempo="120.0" x="280.0" y="40.0"
+              midiProgram="0" globalMidiPrograms="0" midiProgramsEnabled="0"
+              mute="0" muteInput="0" midiProgramsState="" oversamplingFactor="1"
+              enabled="1">
+          <nodes/>
+          <scripts/>
+          <ui>
+            <Block/>
+          </ui>
+          <ports>
+            <Port index="0" channel="0" type="audio" name="In" symbol="in"
+                  flow="input" hiddenOnBlock="0"/>
+            <Port index="1" channel="0" type="audio" name="Out" symbol="out"
+                  flow="output" hiddenOnBlock="0"/>
+          </ports>
+        </Node>
+
+        <!-- Ratatouille: loads the NAM model (amp) and the IR (cab) in one box. -->
+        <Node id="3" format="LV2" identifier="urn:brummer:ratatouille"
+              type="plugin" name="Ratatouille" pluginIdentifierString="LV2-Ratatouille-9569fca9-9569fca9"
+              uuid="b56c562cf4e84ed5b920d2a3108f2e0c" bypass="0" persistent="1"
+              renderMode="single" keyStart="0" keyEnd="127" transpose="0"
+              delayCompensation="0.0" tempo="120.0" x="520.0" y="40.0"
+              midiProgram="0" globalMidiPrograms="0" midiProgramsEnabled="0"
+              mute="0" muteInput="0" midiProgramsState="" oversamplingFactor="1"
+              enabled="1">
+          <nodes/>
+          <scripts/>
+          <ui>
+            <Block/>
+          </ui>
+          <ports>
+            <Port index="0" channel="0" type="audio" name="In0" symbol="in0"
+                  flow="input" hiddenOnBlock="0"/>
+            <Port index="1" channel="0" type="audio" name="Out0" symbol="out0"
+                  flow="output" hiddenOnBlock="0"/>
+          </ports>
+        </Node>
+
+        <!-- Calf stereo reverb: the wall-of-sound tail for rock. -->
+        <Node id="4" format="LV2" identifier="http://calf.sourceforge.net/plugins/Reverb"
+              type="plugin" name="Calf Reverb" pluginIdentifierString="LV2-Calf Reverb-c70bc7c7-c70bc7c7"
+              uuid="caa7c22188684f6eabb0eca8726aca07" bypass="0" persistent="1"
+              renderMode="single" keyStart="0" keyEnd="127" transpose="0"
+              delayCompensation="0.0" tempo="120.0" x="760.0" y="40.0"
+              midiProgram="0" globalMidiPrograms="0" midiProgramsEnabled="0"
+              mute="0" muteInput="0" midiProgramsState="" oversamplingFactor="1"
+              enabled="1">
+          <nodes/>
+          <scripts/>
+          <ui>
+            <Block/>
+          </ui>
+          <ports>
+            <Port index="0" channel="0" type="audio" name="In L" symbol="in_l"
+                  flow="input" hiddenOnBlock="0"/>
+            <Port index="1" channel="1" type="audio" name="In R" symbol="in_r"
+                  flow="input" hiddenOnBlock="0"/>
+            <Port index="2" channel="0" type="audio" name="Out L" symbol="out_l"
+                  flow="output" hiddenOnBlock="0"/>
+            <Port index="3" channel="1" type="audio" name="Out R" symbol="out_r"
+                  flow="output" hiddenOnBlock="0"/>
+          </ports>
+        </Node>
+
+        <Node id="5" format="Internal" identifier="audio.output" type="plugin"
+              name="" pluginIdentifierString="Internal--83a94619-0"
+              uuid="dd9da819559c4a7e8d7cc89e3fd973be" bypass="0" persistent="1"
+              renderMode="single" keyStart="0" keyEnd="127" transpose="0"
+              delayCompensation="0.0" tempo="120.0" x="1000.0" y="40.0"
+              midiProgram="0" globalMidiPrograms="0" midiProgramsEnabled="0"
+              mute="0" muteInput="0" midiProgramsState="" oversamplingFactor="1"
+              enabled="1">
+          <nodes/>
+          <scripts/>
+          <ui>
+            <Block/>
+          </ui>
+          <ports>
+            <Port index="0" channel="0" type="audio" name="Audio In 1" symbol="audio_in_1"
+                  flow="input" hiddenOnBlock="0"/>
+            <Port index="1" channel="1" type="audio" name="Audio In 2" symbol="audio_in_2"
+                  flow="input" hiddenOnBlock="0"/>
+          </ports>
+        </Node>
+      </nodes>
+      <scripts/>
+      <ui>
+        <Block/>
+        <GraphEditorView width="1280" height="500"/>
+      </ui>
+      <arcs>
+        <Arc sourceNode="1" sourcePort="0" destNode="2" destPort="0"/>
+        <Arc sourceNode="2" sourcePort="1" destNode="3" destPort="0"/>
+        <Arc sourceNode="3" sourcePort="1" destNode="4" destPort="0"/>
+        <Arc sourceNode="3" sourcePort="1" destNode="4" destPort="1"/>
+        <Arc sourceNode="4" sourcePort="2" destNode="5" destPort="0"/>
+        <Arc sourceNode="4" sourcePort="3" destNode="5" destPort="1"/>
+      </arcs>
+      <ports>
+        <Port index="0" channel="0" type="audio" name="Audio In 1" symbol="audio_in_1" flow="input"/>
+        <Port index="1" channel="1" type="audio" name="Audio In 2" symbol="audio_in_2" flow="input"/>
+        <Port index="2" channel="0" type="audio" name="Audio Out 1" symbol="audio_out_1" flow="output"/>
+        <Port index="3" channel="1" type="audio" name="Audio Out 2" symbol="audio_out_2" flow="output"/>
+      </ports>
+    </Node>
+  </graphs>
+  <controllers/>
+  <maps/>
+</Session>

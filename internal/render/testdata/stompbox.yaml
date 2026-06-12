@@ -25,6 +25,9 @@ sessions:
       - kind: carla
         name: dirty
         preset: /abs/path/dirty.carla
+      - kind: element
+        name: jam_synth
+        preset: presets/synth.els
       - kind: sooperlooper
         name: jam_looper
         # defaults: osc_port 9951 forbidden (duplicate) → explicit port

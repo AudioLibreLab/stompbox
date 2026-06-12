@@ -91,6 +91,7 @@ CLI options verified on the target machine (2026-06):
 |-----|-------------|
 | qpwgraph | No `-p` flag: the patchbay file is **positional**. `qpwgraph -m -a [-x] bossa.qpwgraph` |
 | Carla | No `carla-headless` binary: `carla --no-gui`. OSC port via `CARLA_OSC_TCP_PORT` / `CARLA_OSC_UDP_PORT` env. Real projects are in **`.carxp`** format (not `.carla`) — those from the old RaySession session are saved by `carla-patchbay` |
+| Element | No headless/no-gui mode at all: `element <session.els>` always opens its window, which **is** the UI — graphical unit like qpwgraph/Hydrogen, no `stomp ui`. Session files are **`.els`** (JUCE ValueTree XML) |
 | Hydrogen | `-s file.h2song`, add `-n` (no splash) and `--driver jack` |
 | SooperLooper | Native headless engine: `sooperlooper -q -j sl_<name> -p <port> -l <loops> -c <ch> -t <sec> [-L session] [-m binding]`. Separate UI: `slgui` |
 

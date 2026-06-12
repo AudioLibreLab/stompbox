@@ -15,6 +15,7 @@ import (
 // Kinds supported by the generator.
 const (
 	KindCarla        = "carla"
+	KindElement      = "element"
 	KindHydrogen     = "hydrogen"
 	KindSooperLooper = "sooperlooper"
 )
@@ -40,7 +41,7 @@ type App struct {
 	Kind string `yaml:"kind"`
 	Name string `yaml:"name"`
 
-	// carla
+	// carla, element
 	Preset     string `yaml:"preset"`
 	OSCTCPPort int    `yaml:"osc_tcp_port"`
 
@@ -151,6 +152,10 @@ func (m *Manifest) Validate() error {
 						return err
 					}
 				}
+			case KindElement:
+				if a.Preset == "" {
+					return fmt.Errorf("session %q: element %q: 'preset' field required", sName, a.Name)
+				}
 			case KindHydrogen:
 				if a.Song == "" {
 					return fmt.Errorf("session %q: hydrogen %q: 'song' field required", sName, a.Name)
@@ -160,7 +165,7 @@ func (m *Manifest) Validate() error {
 					return err
 				}
 			default:
-				return fmt.Errorf("session %q: app %q: unknown kind %q (supported: carla, hydrogen, sooperlooper)", sName, a.Name, a.Kind)
+				return fmt.Errorf("session %q: app %q: unknown kind %q (supported: carla, element, hydrogen, sooperlooper)", sName, a.Name, a.Kind)
 			}
 		}
 		if s.Patchbay != nil && s.Patchbay.File == "" {
