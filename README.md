@@ -1,105 +1,102 @@
 # Stompbox 🎛️
 
-**Audio as Code** pour studio personnel : sessions audio déclaratives,
-versionnées dans Git, orchestrées par systemd (mode utilisateur) et câblées
-par qpwgraph sous PipeWire/Wayland. Pas de gestionnaire de session graphique.
+**Audio as Code** for a personal studio: declarative audio sessions,
+versioned in Git, orchestrated by systemd (user mode) and wired by
+qpwgraph under PipeWire/Wayland. No graphical session manager.
 
-Une *stompbox*, c'est une pédale d'effet : on écrase la pédale pour lancer
-la session.
+A *stompbox* is an effects pedal: you stomp on it to launch the session.
 
 ```console
-$ stomp on bossa      # démarre la session
-$ stomp off           # coupe tout
-$ stomp status        # qu'est-ce qui tourne ?
+$ stomp on bossa      # start the session
+$ stomp off           # turn everything off
+$ stomp status        # what's running?
 ```
 
-## Principe
+## Principle
 
-La source de vérité est le manifeste [`stompbox.yaml`](stompbox.yaml).
-Les units systemd sont des **artefacts générés**, jamais édités à la main.
-Cloner le dépôt + `stomp apply` = studio reconstruit.
+The source of truth is the [`stompbox.yaml`](stompbox.yaml) manifest.
+systemd units are **generated artifacts**, never edited by hand.
+Clone the repo + `stomp apply` = studio rebuilt.
 
 ```
 stompbox.yaml ──(stomp apply)──▶ ~/.config/systemd/user/*.service, *.target
                                  ~/.config/stompbox/<kind>/<instance>.env
 ```
 
-- Une session = un `.target` systemd (`bossa.target`) qui tire ses apps
-  via `Wants=` — une app qui plante ne fait pas tomber la session.
-- `StopWhenUnneeded=yes` dans les gabarits : arrêter le target arrête
-  réellement toutes les instances.
-- Le routage est confié à `qpwgraph -m -a [-x] <fichier.qpwgraph>` en
-  patchbay **activé** : les connexions sont réappliquées dès que les nœuds
-  apparaissent, l'ordre de démarrage devient indifférent.
-- Pas de section `[Install]` : rien ne démarre au boot, tout est impératif.
+- A session is a systemd `.target` (`bossa.target`) that pulls in its apps
+  via `Wants=` — a crashing app doesn't bring down the session.
+- `StopWhenUnneeded=yes` in the templates: stopping the target actually
+  stops all the instances.
+- Routing is handled by `qpwgraph -m -a [-x] <file.qpwgraph>` with the
+  patchbay **enabled**: connections are reapplied as soon as nodes appear,
+  so startup order no longer matters.
+- No `[Install]` section: nothing starts at boot, everything is imperative.
 
 ## Installation
 
 ```console
 $ go build -o stomp ./cmd/stomp
-$ ./stomp apply          # génère et installe les units
+$ ./stomp apply          # generate and install the units
 $ ./stomp on bossa       # 🎸
 ```
 
-## Commandes
+## Commands
 
-| Commande | Effet |
+| Command | Effect |
 |----------|-------|
-| `stomp render [-o dir]` | Génère les artefacts dans un répertoire (inspection) |
-| `stomp apply` | Génère, installe dans `~/.config`, `daemon-reload` |
-| `stomp on <session>` | Importe l'env Wayland puis démarre `<session>.target` |
-| `stomp off [session]` | Arrête une session, ou toutes si omis |
-| `stomp status` | État du target et des units de chaque session |
-| `stomp ui <instance\|kind>` | Ouvre l'IHM jetable (carla-control / slgui attaché au moteur). Un kind suffit s'il n'a qu'une instance |
+| `stomp render [-o dir]` | Generate the artifacts into a directory (inspection) |
+| `stomp apply` | Generate, install into `~/.config`, `daemon-reload` |
+| `stomp on <session>` | Import the Wayland env then start `<session>.target` |
+| `stomp off [session]` | Stop a session, or all if omitted |
+| `stomp status` | State of the target and units of each session |
+| `stomp ui <instance\|kind>` | Open the throwaway UI (carla-control / slgui attached to the engine). A kind is enough if it has a single instance |
 
-Toutes acceptent `-f <manifeste>` (défaut : `stompbox.yaml`).
+All accept `-f <manifest>` (default: `stompbox.yaml`) and `-v` (verbose / debug logging).
 
-## Manifeste
+## Manifest
 
 ```yaml
 sessions:
   bossa:
     apps:
-      - kind: carla            # host headless (--no-gui), IHM via `stomp ui`
-        name: clean            # optionnel — défaut: <session>-<kind> (bossa-carla)
+      - kind: carla            # headless host (--no-gui), UI via `stomp ui`
+        name: clean            # optional — default: <session>-<kind> (bossa-carla)
         preset: presets/clean.carla
-        osc_tcp_port: 1455     # contrôle OSC TCP (env CARLA_OSC_TCP_PORT)
+        osc_tcp_port: 1455     # OSC TCP control (CARLA_OSC_TCP_PORT env)
       - kind: hydrogen         # hydrogen -n --driver jack -s <song>
         name: bossa_groove
         song: songs/bossa.h2song
-      - kind: sooperlooper     # moteur headless, IHM via `stomp ui`
+      - kind: sooperlooper     # headless engine, UI via `stomp ui`
         name: looper
-        osc_port: 9951         # OSC en UDP
+        osc_port: 9951         # OSC over UDP
         loops: 2
         channels: 2
-        looptime: 60           # secondes de mémoire par canal
-        session: loops/bossa.slsess          # optionnel
-        midi_binding: midi/footswitch.slb    # optionnel
+        looptime: 60           # seconds of memory per channel
+        session: loops/bossa.slsess          # optional
+        midi_binding: midi/footswitch.slb    # optional
     patchbay:
       file: patchbays/bossa.qpwgraph
-      exclusive: true          # -x : déconnecte ce qui n'est pas dans le fichier
+      exclusive: true          # -x: disconnect anything not in the file
 ```
 
-Le champ `name` est optionnel : par défaut une instance s'appelle
-`<session>-<kind>` (ex. `bossa-carla`). Du coup deux apps du même kind dans
-une session imposent un `name` explicite, sinon leurs noms défautés
-collisionnent.
+The `name` field is optional: by default an instance is named
+`<session>-<kind>` (e.g. `bossa-carla`). So two apps of the same kind in a
+session require an explicit `name`, otherwise their defaulted names collide.
 
-Contraintes validées au chargement : noms `[a-zA-Z0-9_-]`, noms d'instance
-uniques sur tout le manifeste, ports OSC uniques, champs requis par kind.
+Constraints validated on load: names `[a-zA-Z0-9_-]`, instance names unique
+across the whole manifest, unique OSC ports, fields required per kind.
 
-Les presets, songs et patchbays vivent dans le dépôt à côté du manifeste
-(chemins relatifs résolus par rapport à `stompbox.yaml`). Pour créer un
-`.qpwgraph` : câbler une fois à la main dans qpwgraph, sauvegarder le
-patchbay, commiter.
+Presets, songs and patchbays live in the repo next to the manifest (relative
+paths resolved against `stompbox.yaml`). To create a `.qpwgraph`: wire it up
+once by hand in qpwgraph, save the patchbay, commit it.
 
-## Développement
+## Development
 
 ```console
 $ go test ./...
-$ go test ./internal/render -update   # régénère les goldens
+$ go test ./internal/render -update   # regenerate the goldens
 ```
 
-Voir [PLAN.md](PLAN.md) pour l'architecture complète et le phasage
-(phase 2 : serveur web embarqué `stomp serve`, phase 3 : D-Bus, SSE,
-contrôle transport OSC).
+See [PLAN.md](PLAN.md) for the full architecture and phasing
+(phase 2: embedded web server `stomp serve`, phase 3: D-Bus, SSE,
+OSC transport control).

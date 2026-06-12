@@ -1,24 +1,26 @@
-// Package systemd encapsule les appels à systemctl --user.
-// Phase 1 : exec direct, lisible et trivial à déboguer.
-// Phase 3 prévue : remplacement par D-Bus (go-systemd) pour les états temps réel.
+// Package systemd wraps systemctl --user calls.
+// Phase 1: direct exec, readable and trivial to debug.
+// Phase 3 planned: replace with D-Bus (go-systemd) for real-time state.
 package systemd
 
 import (
 	"fmt"
+	"log/slog"
 	"os"
 	"os/exec"
 	"strings"
 )
 
-// Client pilote le gestionnaire systemd de l'utilisateur courant.
+// Client drives the current user's systemd manager.
 type Client struct{}
 
 func (c *Client) command(args ...string) *exec.Cmd {
 	return exec.Command("systemctl", append([]string{"--user"}, args...)...)
 }
 
-// run exécute systemctl en laissant sa sortie visible (diagnostics utiles).
+// run executes systemctl, leaving its output visible (useful diagnostics).
 func (c *Client) run(args ...string) error {
+	slog.Debug("running systemctl", "args", args)
 	cmd := c.command(args...)
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -28,25 +30,25 @@ func (c *Client) run(args ...string) error {
 	return nil
 }
 
-// DaemonReload recharge les units après génération.
+// DaemonReload reloads the units after generation.
 func (c *Client) DaemonReload() error {
 	return c.run("daemon-reload")
 }
 
-// Start démarre une unité (typiquement un .target de session).
+// Start starts a unit (typically a session .target).
 func (c *Client) Start(unit string) error {
 	return c.run("start", unit)
 }
 
-// Stop arrête une ou plusieurs unités. Grâce à StopWhenUnneeded=yes dans les
-// gabarits, arrêter le .target suffit à arrêter toutes les instances.
+// Stop stops one or more units. Thanks to StopWhenUnneeded=yes in the
+// templates, stopping the .target is enough to stop all the instances.
 func (c *Client) Stop(units ...string) error {
 	return c.run(append([]string{"stop"}, units...)...)
 }
 
-// IsActive retourne l'état d'une unité ("active", "inactive", "failed"…).
-// systemctl is-active sort en code non nul quand l'unité est inactive :
-// ce n'est pas une erreur pour nous.
+// IsActive returns a unit's state ("active", "inactive", "failed"…).
+// systemctl is-active exits with a non-zero code when the unit is
+// inactive: that's not an error for us.
 func (c *Client) IsActive(unit string) string {
 	out, _ := c.command("is-active", unit).Output()
 	state := strings.TrimSpace(string(out))
@@ -56,9 +58,9 @@ func (c *Client) IsActive(unit string) string {
 	return state
 }
 
-// ImportGraphicalEnv pousse l'environnement graphique de la session courante
-// vers systemd user, pour que les IHM s'ouvrent sur le bureau Wayland actuel.
-// GNOME/KDE le font au login ; ceinture et bretelles avant chaque démarrage.
+// ImportGraphicalEnv pushes the current session's graphical environment to
+// systemd user, so UIs open on the current Wayland desktop. GNOME/KDE
+// already do this at login; belt and braces before every start.
 func (c *Client) ImportGraphicalEnv() error {
 	var vars []string
 	for _, v := range []string{"WAYLAND_DISPLAY", "DISPLAY"} {
@@ -67,7 +69,7 @@ func (c *Client) ImportGraphicalEnv() error {
 		}
 	}
 	if len(vars) == 0 {
-		return fmt.Errorf("ni WAYLAND_DISPLAY ni DISPLAY dans l'environnement: lancement hors session graphique ?")
+		return fmt.Errorf("neither WAYLAND_DISPLAY nor DISPLAY in the environment: running outside a graphical session?")
 	}
 	return c.run(append([]string{"import-environment"}, vars...)...)
 }

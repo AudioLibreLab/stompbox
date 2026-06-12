@@ -4,15 +4,15 @@ Description=Hydrogen instance "%i" (stompbox)
 After=pipewire.service graphical-session.target
 BindsTo=graphical-session.target
 StopWhenUnneeded=yes
-# Restart=always sans limite : fermer l'IHM la fait revenir,
-# seul "stomp off" éteint le pédalier.
+# Restart=always with no limit: closing the UI brings it back,
+# only "stomp off" turns the pedalboard off.
 StartLimitIntervalSec=0
 
 [Service]
 Type=simple
 EnvironmentFile=%h/.config/stompbox/hydrogen/%i.env
-# pw-jack : la libjack système est celle de JACK2 (sans jackd) ;
-# il redirige vers la libjack de PipeWire.
+# pw-jack: the system libjack is JACK2's (without jackd);
+# it redirects to PipeWire's libjack.
 ExecStart=/usr/bin/pw-jack /usr/bin/hydrogen -n --driver jack -s ${H2_SONG}
 Restart=always
 RestartSec=2

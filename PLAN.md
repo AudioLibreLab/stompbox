@@ -1,45 +1,44 @@
-# Stompbox — Plan de développement
+# Stompbox — Development Plan
 
-> **Audio as Code** pour studio personnel : sessions audio déclaratives,
-> versionnées dans Git, orchestrées par systemd (mode utilisateur) et
-> câblées par qpwgraph sous PipeWire/Wayland.
+> **Audio as Code** for a personal studio: declarative audio sessions,
+> versioned in Git, orchestrated by systemd (user mode) and wired by
+> qpwgraph under PipeWire/Wayland.
 
-Une *stompbox*, c'est une pédale d'effet : on écrase la pédale pour lancer
-la session.
+A *stompbox* is an effects pedal: you stomp on it to launch the session.
 
 ```
-stomp on bossa      # démarre la session
-stomp off           # coupe tout
-stomp status        # qu'est-ce qui tourne ?
+stomp on bossa      # start the session
+stomp off           # turn everything off
+stomp status        # what's running?
 ```
 
 ---
 
-## 1. Principe
+## 1. Principle
 
-La source de vérité est un **manifeste YAML déclaratif** (`stompbox.yaml`)
-versionné dans Git. Les units systemd sont des **artefacts générés**, jamais
-édités à la main. Cloner le dépôt + `stomp apply` = studio reconstruit.
+The source of truth is a **declarative YAML manifest** (`stompbox.yaml`)
+versioned in Git. systemd units are **generated artifacts**, never edited
+by hand. Clone the repo + `stomp apply` = studio rebuilt.
 
-Pas de gestionnaire de session graphique (NSM/RaySession) : le cycle de vie
-des applications est confié à systemd user, le routage audio/MIDI à qpwgraph
-en mode patchbay activé.
+No graphical session manager (NSM/RaySession): application lifecycle is
+handled by systemd user, audio/MIDI routing by qpwgraph in enabled-patchbay
+mode.
 
 ## 2. Architecture
 
-Un **seul binaire Go**, zéro dépendance d'exécution autre que
-systemd/PipeWire :
+A **single Go binary**, zero runtime dependency other than
+systemd/PipeWire:
 
 ```
-stomp render   → génère les units systemd depuis le manifeste YAML
-stomp apply    → render + copie dans ~/.config/systemd/user + daemon-reload
-stomp on/off   → start/stop des targets de session
-stomp status   → état des sessions
-stomp ui       → lance l'IHM d'une app (ex: slgui attaché au moteur)
-stomp serve    → serveur web (UI embarquée via embed.FS)
+stomp render   → generates the systemd units from the YAML manifest
+stomp apply    → render + copy into ~/.config/systemd/user + daemon-reload
+stomp on/off   → start/stop session targets
+stomp status   → state of the sessions
+stomp ui       → launches an app's UI (e.g. slgui attached to the engine)
+stomp serve    → web server (UI embedded via embed.FS)
 ```
 
-### Manifeste exemple
+### Example manifest
 
 ```yaml
 # stompbox.yaml
@@ -49,159 +48,161 @@ sessions:
       - kind: carla
         name: clean
         preset: presets/clean.carla
-        osc_tcp_port: 1455      # explicite — pas d'arithmétique sur %i
+        osc_tcp_port: 1455      # explicit — no arithmetic on %i
       - kind: hydrogen
         name: bossa_groove
         song: songs/bossa.h2song
       - kind: sooperlooper
         name: looper
-        osc_port: 9951          # attention : UDP (Carla, lui, peut faire TCP)
+        osc_port: 9951          # note: UDP (Carla, on the other hand, can do TCP)
         loops: 2
         channels: 2
-        looptime: 60            # secondes de mémoire par canal
-        session: loops/bossa.slsess        # optionnel
-        midi_binding: midi/footswitch.slb  # optionnel
+        looptime: 60            # seconds of memory per channel
+        session: loops/bossa.slsess        # optional
+        midi_binding: midi/footswitch.slb  # optional
     patchbay:
       file: patchbays/bossa.qpwgraph
-      exclusive: true           # qpwgraph -x : le câblage du fichier fait loi
+      exclusive: true           # qpwgraph -x: the file's wiring is authoritative
 ```
 
-### Arborescence du dépôt
+### Repo layout
 
 ```
 stompbox/
 ├── cmd/stomp/main.go
 ├── internal/
-│   ├── manifest/        # parsing + validation YAML
-│   ├── render/          # text/template → units + fichiers d'env
-│   ├── systemd/         # wrapper systemctl --user (proto), D-Bus ensuite
-│   └── server/          # API HTTP + UI embarquée
-├── web/                 # UI statique (embarquée dans le binaire)
-├── templates/           # gabarits .service / .target
-├── examples/bossa/      # session d'exemple complète
+│   ├── manifest/        # YAML parsing + validation
+│   ├── render/          # text/template → units + env files
+│   ├── systemd/         # systemctl --user wrapper (proto), D-Bus later
+│   └── server/          # HTTP API + embedded UI
+├── web/                 # static UI (embedded in the binary)
+├── templates/           # .service / .target templates
+├── examples/bossa/      # complete example session
 ├── stompbox.yaml
 ├── PLAN.md
 └── README.md
 ```
 
-## 3. Règles de génération systemd (corrections validées)
+## 3. systemd generation rules (validated fixes)
 
-Options CLI vérifiées sur la machine cible (2026-06) :
+CLI options verified on the target machine (2026-06):
 
-| App | Réalité CLI |
+| App | CLI reality |
 |-----|-------------|
-| qpwgraph | Pas de flag `-p` : le fichier patchbay est **positionnel**. `qpwgraph -m -a [-x] bossa.qpwgraph` |
-| Carla | Pas de binaire `carla-headless` : `carla --no-gui`. Port OSC via env `CARLA_OSC_TCP_PORT` / `CARLA_OSC_UDP_PORT`. Les projets réels sont au format **`.carxp`** (pas `.carla`) — ceux de l'ancienne session RaySession sont sauvés par `carla-patchbay` |
-| Hydrogen | `-s fichier.h2song`, ajouter `-n` (pas de splash) et `--driver jack` |
-| SooperLooper | Moteur headless natif : `sooperlooper -q -j sl_<nom> -p <port> -l <loops> -c <ch> -t <sec> [-L session] [-m binding]`. IHM séparée : `slgui` |
+| qpwgraph | No `-p` flag: the patchbay file is **positional**. `qpwgraph -m -a [-x] bossa.qpwgraph` |
+| Carla | No `carla-headless` binary: `carla --no-gui`. OSC port via `CARLA_OSC_TCP_PORT` / `CARLA_OSC_UDP_PORT` env. Real projects are in **`.carxp`** format (not `.carla`) — those from the old RaySession session are saved by `carla-patchbay` |
+| Hydrogen | `-s file.h2song`, add `-n` (no splash) and `--driver jack` |
+| SooperLooper | Native headless engine: `sooperlooper -q -j sl_<name> -p <port> -l <loops> -c <ch> -t <sec> [-L session] [-m binding]`. Separate UI: `slgui` |
 
-Règles appliquées dans les gabarits :
+Rules applied in the templates:
 
-- **`StopWhenUnneeded=yes`** dans chaque template de service : `Requires=` ne
-  propage pas l'arrêt ; avec ce flag, `stomp off` (stop du target) rend les
-  instances « inutiles » et systemd les arrête. C'est LE piège du design naïf.
-- **`Wants=`** plutôt que `Requires=` dans les targets : une app qui plante au
-  lancement ne fait pas échouer toute la session.
+- **`StopWhenUnneeded=yes`** in every service template: `Requires=` doesn't
+  propagate stop; with this flag, `stomp off` (stopping the target) makes
+  the instances "unneeded" and systemd stops them. This is THE trap of a
+  naive design.
+- **`Wants=`** rather than `Requires=` in the targets: an app that crashes
+  on startup doesn't fail the whole session.
 - **`BindsTo=graphical-session.target`** + `After=graphical-session.target`
-  sur les unités graphiques : mort propre au logout.
-- **Pas de section `[Install]`** : démarrage purement impératif via
+  on graphical units: clean death on logout.
+- **No `[Install]` section**: purely imperative startup via
   `systemctl --user start <session>.target`.
-- **Un fichier d'env par instance** (`EnvironmentFile=%h/.config/stompbox/<kind>/%i.env`)
-  portant port OSC, chemin de preset/song/session — résout proprement le
-  besoin « un port unique par instance ».
-- **Nom de client JACK déterministe par instance** (ex: `-j sl_%i` pour
-  SooperLooper, `--cnprefix` pour Carla multi-client) : indispensable pour que
-  le patchbay qpwgraph s'applique de façon fiable et pour les instances
-  multiples.
-- Le serveur/CLI fait `systemctl --user import-environment WAYLAND_DISPLAY DISPLAY`
-  par sécurité avant tout start (GNOME/KDE le font déjà au login ;
-  `XDG_RUNTIME_DIR` est connu de systemd user par construction).
+- **One env file per instance** (`EnvironmentFile=%h/.config/stompbox/<kind>/%i.env`)
+  carrying the OSC port, preset/song/session path — cleanly solves the
+  "one unique port per instance" requirement.
+- **Deterministic JACK client name per instance** (e.g. `-j sl_%i` for
+  SooperLooper, `--cnprefix` for multi-client Carla): essential for the
+  qpwgraph patchbay to apply reliably and for multiple instances.
+- The server/CLI runs `systemctl --user import-environment WAYLAND_DISPLAY DISPLAY`
+  as a safety net before any start (GNOME/KDE already do this at login;
+  `XDG_RUNTIME_DIR` is known to systemd user by construction).
 
-### Pourquoi qpwgraph en patchbay activé est le point fort
+### Why an enabled-patchbay qpwgraph is the key strength
 
-Patchbay **activé** (`-a`) : qpwgraph réapplique les connexions au fil de
-l'eau dès que les nœuds apparaissent. Ça élimine la course classique
-(« l'app n'est pas prête quand on câble ») — l'ordre de démarrage des unités
-devient presque indifférent.
+**Enabled** patchbay (`-a`): qpwgraph reapplies connections on the fly as
+soon as nodes appear. This eliminates the classic race ("the app isn't
+ready when we wire it up") — the startup order of units becomes almost
+irrelevant.
 
-### IHM des apps : pas dans systemd
+### App UIs: not in systemd
 
-`slgui` (et les GUIs Carla) sont des clients jetables : on les ouvre pour
-régler, on les ferme, le moteur continue. Exposé via `stomp ui <instance>`.
+`slgui` (and the Carla GUIs) are throwaway clients: open them to tweak
+settings, close them, the engine keeps running. Exposed via `stomp ui <instance>`.
 
-## 4. Phasage
+## 4. Phasing
 
-### Phase 0 — valider l'audio, zéro ligne de Go (une soirée)
+### Phase 0 — validate the audio, zero lines of Go (one evening)
 
-Le vrai risque n'est pas le code, c'est le comportement de
-qpwgraph/Carla/systemd. Écrire **à la main** les units de la session bossa
-dans `~/.config/systemd/user/` et vérifier :
+The real risk isn't the code, it's the behavior of qpwgraph/Carla/systemd.
+Write the bossa session's units **by hand** in `~/.config/systemd/user/`
+and check:
 
-- [ ] `qpwgraph -m -a` survit-il sans tray système sous le compositeur
-      Wayland cible ? (GNOME Wayland n'a pas de tray natif ; KDE oui)
-- [ ] `CARLA_OSC_TCP_PORT` est-il honoré par le Carla installé ?
-- [ ] `carla --no-gui presets/jazz.carxp` charge-t-il bien un projet sauvé
-      par `carla-patchbay` (sessions RaySession migrées) ?
-- [ ] `StopWhenUnneeded=yes` arrête-t-il bien tout au `stop <session>.target` ?
-- [ ] `slgui` s'attache/se détache du moteur sans interrompre les boucles ?
-- [ ] Créer `patchbays/homestudio.qpwgraph` : câbler une fois dans qpwgraph
-      en suivant `patchbays/homestudio.raypatch.xml`, sauvegarder, commiter.
+- [ ] Does `qpwgraph -m -a` survive without a system tray under the target
+      Wayland compositor? (GNOME Wayland has no native tray; KDE does)
+- [ ] Is `CARLA_OSC_TCP_PORT` honored by the installed Carla?
+- [ ] Does `carla --no-gui presets/jazz.carxp` correctly load a project
+      saved by `carla-patchbay` (migrated RaySession sessions)?
+- [ ] Does `StopWhenUnneeded=yes` actually stop everything on
+      `stop <session>.target`?
+- [ ] Does `slgui` attach/detach from the engine without interrupting the
+      loops?
+- [ ] Create `patchbays/homestudio.qpwgraph`: wire it up once in qpwgraph
+      following `patchbays/homestudio.raypatch.xml`, save, commit.
 
-Les units validés deviennent les gabarits de la phase 1.
+The validated units become phase 1's templates.
 
-### Phase 1 — CLI `stomp` (le cœur)
+### Phase 1 — `stomp` CLI (the core)
 
-Manifeste → génération → `apply` / `on` / `off` / `status` / `gui`.
-Le wrapper systemd fait juste `exec systemctl --user ...` : trivial à
-déboguer. Tests golden sur le rendu des units (YAML → texte).
-**À la fin de cette phase le projet est utilisable au quotidien sans UI.**
+Manifest → generation → `apply` / `on` / `off` / `status` / `ui`.
+The systemd wrapper just does `exec systemctl --user ...`: trivial to
+debug. Golden tests on unit rendering (YAML → text).
+**By the end of this phase the project is usable day-to-day without a UI.**
 
-### Phase 2 — `stomp serve`, l'IHM web
+### Phase 2 — `stomp serve`, the web UI
 
-- API REST minimale : `GET /api/sessions`,
+- Minimal REST API: `GET /api/sessions`,
   `POST /api/sessions/{name}/start|stop`, `GET /api/status`
-- Page htmx ou vanilla JS, gros boutons façon pédalier
-- Pas de toolchain Node : tout en `embed.FS`, stdlib `net/http`
-- `import-environment` Wayland au démarrage du serveur
-- Cas d'usage cible : tablette posée sur l'ampli
+- htmx or vanilla JS page, big pedalboard-style buttons
+- No Node toolchain: everything in `embed.FS`, stdlib `net/http`
+- Wayland `import-environment` on server startup
+- Target use case: a tablet sitting on the amp
 
-### Phase 1.5 — migration RaySession (backlog)
+### Phase 1.5 — RaySession migration (backlog)
 
-- `stomp import-raypatch <patch.xml>` : convertir les connexions
-  ray-jackpatch (ex: `patchbays/homestudio.raypatch.xml`) en fichier
-  `.qpwgraph`, pour migrer les anciennes sessions sans recâbler à la main.
-- Kinds futurs identifiés dans les sessions RaySession existantes :
+- `stomp import-raypatch <patch.xml>`: convert ray-jackpatch connections
+  (e.g. `patchbays/homestudio.raypatch.xml`) into a `.qpwgraph` file, to
+  migrate old sessions without rewiring by hand.
+- Future kinds identified in existing RaySession sessions:
   `ardour`, `midi2osc`.
-- L'état SooperLooper (`.slsess` + wav des boucles) reste hors Git :
-  c'est de l'état de jeu, pas de la configuration. Seul le binding MIDI
-  (`.slb`, pédalier Morningstar MC8) est versionné.
+- SooperLooper state (`.slsess` + loop wavs) stays out of Git: it's
+  playing state, not configuration. Only the MIDI binding
+  (`.slb`, Morningstar MC8 pedalboard) is versioned.
 
-### Phase 3 — affinage
+### Phase 3 — refinement
 
-- Remplacer les exec `systemctl` par D-Bus
-  (`github.com/coreos/go-systemd/v22/dbus`) : états temps réel
-- Push des changements d'état vers l'UI en SSE
-- Logs journald par session dans l'UI
-- Contrôle transport : boutons **record/overdub/undo par boucle** via l'OSC
-  de SooperLooper (`/sl/0/hit record`, `/sl/-1/hit trigger`…), play/stop
-  Hydrogen
-- Pédalier MIDI USB branché directement sur le moteur SooperLooper (`-m`)
+- Replace `systemctl` execs with D-Bus
+  (`github.com/coreos/go-systemd/v22/dbus`): real-time state
+- Push state changes to the UI via SSE
+- Per-session journald logs in the UI
+- Transport control: **per-loop record/overdub/undo** buttons via
+  SooperLooper OSC (`/sl/0/hit record`, `/sl/-1/hit trigger`…), Hydrogen
+  play/stop
+- USB MIDI pedalboard wired directly into the SooperLooper engine (`-m`)
 
-## 5. Choix techniques assumés
+## 5. Accepted technical choices
 
-- **Pas de framework web ni de build front** : stdlib + htmx embarqué,
-  un binaire unique copiable n'importe où.
-- **systemctl en exec d'abord, D-Bus ensuite** : le proto reste lisible,
-  l'interface `internal/systemd` isole le changement.
-- **Presets/songs/patchbays/sessions vivent dans le dépôt Git** à côté du
-  manifeste.
+- **No web framework or frontend build**: stdlib + embedded htmx, a
+  single binary that can be copied anywhere.
+- **systemctl via exec first, D-Bus later**: the prototype stays
+  readable, the `internal/systemd` interface isolates the change.
+- **Presets/songs/patchbays/sessions live in the Git repo** next to the
+  manifest.
 
-## 6. Risques connus
+## 6. Known risks
 
-- Tray système absent sous GNOME Wayland → comportement de `qpwgraph -m` à
-  valider en phase 0 (sinon : le laisser en fenêtre normale sur un autre
-  workspace, ou extension AppIndicator).
-- Hydrogen installé en 1.2.0-**beta** (2024) → à mettre à jour.
-- OSC SooperLooper en **UDP** vs Carla en TCP : `stomp ui` et les contrôles
-  web devront gérer les deux.
-- Tkinter abandonné au profit du web — plus de question XWayland.
+- No system tray under GNOME Wayland → `qpwgraph -m` behavior to validate
+  in phase 0 (otherwise: leave it as a normal window on another workspace,
+  or an AppIndicator extension).
+- Hydrogen installed as 1.2.0-**beta** (2024) → needs updating.
+- SooperLooper OSC over **UDP** vs Carla over TCP: `stomp ui` and the web
+  controls will need to handle both.
+- Tkinter dropped in favor of the web — no more XWayland question.

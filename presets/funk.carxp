@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE CARLA-PROJECT>
-<!-- Profil funk : compresseur → Ratatouille (NAM ampli + IR baffle) → chorus.
-     Modèle NAM et IR pointés en chemin absolu (paramètres patch:writable de
-     Ratatouille sérialisés par Carla en CustomData atom:Path).
-     Câblage interne mono jusqu'au chorus, qui ouvre le signal en stéréo. -->
+<!-- Funk profile: compressor → Ratatouille (NAM amp + IR cab) → chorus.
+     NAM model and IR pointed to via absolute paths (Ratatouille's
+     patch:writable parameters serialized by Carla as CustomData atom:Path).
+     Internal wiring is mono up to the chorus, which opens the signal to stereo. -->
 <CARLA-PROJECT VERSION='2.5'>
  <EngineSettings>
   <ForceStereo>false</ForceStereo>
@@ -18,7 +18,7 @@
   <BeatsPerMinute>120</BeatsPerMinute>
  </Transport>
 
- <!-- Compresseur en tête de chaîne : claque le coup de médiator du funk. -->
+ <!-- Compressor at the front of the chain: snaps the funk pick attack. -->
  <Plugin>
   <Info>
    <Type>LV2</Type>
@@ -32,7 +32,7 @@
   </Data>
  </Plugin>
 
- <!-- Ratatouille : charge le modèle NAM (ampli) et l'IR (baffle) en une boîte. -->
+ <!-- Ratatouille: loads the NAM model (amp) and the IR (cab) in one box. -->
  <Plugin>
   <Info>
    <Type>LV2</Type>
@@ -57,7 +57,7 @@
   </Data>
  </Plugin>
 
- <!-- Chorus stéréo Calf : la modulation signature du funk clean. -->
+ <!-- Calf stereo chorus: the signature modulation of clean funk. -->
  <Plugin>
   <Info>
    <Type>LV2</Type>

@@ -8,8 +8,8 @@ StopWhenUnneeded=yes
 [Service]
 Type=simple
 EnvironmentFile=%h/.config/stompbox/qpwgraph/%i.env
-# -a : patchbay activé, les connexions sont réappliquées dès que les
-# nœuds apparaissent — l'ordre de démarrage des apps devient indifférent.
+# -a: patchbay enabled, connections are reapplied as soon as
+# nodes appear — the startup order of apps no longer matters.
 ExecStart=/usr/bin/qpwgraph -m -a $QPW_EXCLUSIVE ${QPW_PATCHBAY}
 Restart=on-failure
 RestartSec=2

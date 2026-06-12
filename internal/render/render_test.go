@@ -9,17 +9,17 @@ import (
 	"github.com/AudioLibreLab/stompbox/internal/manifest"
 )
 
-var update = flag.Bool("update", false, "réécrit les fichiers golden")
+var update = flag.Bool("update", false, "rewrite golden files")
 
-// TestRenderGolden compare le rendu complet du manifeste de test aux
-// fichiers de référence. Régénération : go test ./internal/render -update
+// TestRenderGolden compares the full render of the test manifest against
+// the reference files. Regenerate with: go test ./internal/render -update
 func TestRenderGolden(t *testing.T) {
 	m, err := manifest.Load("testdata/stompbox.yaml")
 	if err != nil {
 		t.Fatal(err)
 	}
-	// Répertoire fixe pour que les chemins absolus résolus soient
-	// indépendants de l'emplacement du dépôt.
+	// Fixed directory so resolved absolute paths are independent of
+	// the repo's location.
 	m.Dir = "/studio"
 
 	files, err := Render(m)
@@ -48,15 +48,15 @@ func TestRenderGolden(t *testing.T) {
 		}
 		want, err := os.ReadFile(golden)
 		if err != nil {
-			t.Errorf("%s: fichier golden manquant (lancer go test -update): %v", f.Path, err)
+			t.Errorf("%s: missing golden file (run go test -update): %v", f.Path, err)
 			continue
 		}
 		if f.Content != string(want) {
-			t.Errorf("%s: rendu différent du golden\n--- attendu ---\n%s\n--- obtenu ---\n%s", f.Path, want, f.Content)
+			t.Errorf("%s: render differs from golden\n--- want ---\n%s\n--- got ---\n%s", f.Path, want, f.Content)
 		}
 	}
 
-	// Détecte les goldens orphelins (artefact supprimé du rendu).
+	// Detect orphaned golden files (artifact removed from the render).
 	if !*update {
 		err := filepath.Walk("testdata/golden", func(path string, info os.FileInfo, err error) error {
 			if err != nil || info.IsDir() {
@@ -64,7 +64,7 @@ func TestRenderGolden(t *testing.T) {
 			}
 			rel, _ := filepath.Rel("testdata/golden", path)
 			if !seen[rel] {
-				t.Errorf("golden orphelin: %s n'est plus généré", rel)
+				t.Errorf("orphaned golden: %s is no longer generated", rel)
 			}
 			return nil
 		})
@@ -82,6 +82,6 @@ func TestCheckPathsWarnsOnMissingFiles(t *testing.T) {
 	m.Dir = "/nonexistent"
 	warnings := CheckPaths(m)
 	if len(warnings) == 0 {
-		t.Error("CheckPaths devrait signaler les fichiers manquants")
+		t.Error("CheckPaths should report missing files")
 	}
 }

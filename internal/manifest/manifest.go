@@ -1,5 +1,5 @@
-// Package manifest charge et valide le manifeste déclaratif stompbox.yaml,
-// la source de vérité des sessions du studio.
+// Package manifest loads and validates the declarative stompbox.yaml
+// manifest, the source of truth for the studio's sessions.
 package manifest
 
 import (
@@ -12,30 +12,30 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-// Kinds supportés par le générateur.
+// Kinds supported by the generator.
 const (
 	KindCarla        = "carla"
 	KindHydrogen     = "hydrogen"
 	KindSooperLooper = "sooperlooper"
 )
 
-// Manifest est la racine du fichier stompbox.yaml.
+// Manifest is the root of the stompbox.yaml file.
 type Manifest struct {
 	Sessions map[string]*Session `yaml:"sessions"`
 
-	// Dir est le répertoire absolu contenant le manifeste ;
-	// les chemins relatifs du manifeste sont résolus par rapport à lui.
+	// Dir is the absolute directory containing the manifest;
+	// relative paths in the manifest are resolved against it.
 	Dir string `yaml:"-"`
 }
 
-// Session décrit un ensemble d'applications et leur câblage.
+// Session describes a set of applications and their wiring.
 type Session struct {
 	Apps     []*App    `yaml:"apps"`
 	Patchbay *Patchbay `yaml:"patchbay"`
 }
 
-// App décrit une instance d'application. Les champs sont spécifiques au kind ;
-// la validation impose ceux qui sont requis.
+// App describes an application instance. Fields are kind-specific;
+// validation enforces which ones are required.
 type App struct {
 	Kind string `yaml:"kind"`
 	Name string `yaml:"name"`
@@ -56,20 +56,20 @@ type App struct {
 	MIDIBinding string `yaml:"midi_binding"`
 }
 
-// Patchbay décrit le fichier de brassage qpwgraph d'une session.
+// Patchbay describes a session's qpwgraph patchbay file.
 type Patchbay struct {
 	File      string `yaml:"file"`
 	Exclusive bool   `yaml:"exclusive"`
 }
 
-// Unit retourne le nom de l'unité systemd de l'instance (ex: carla@clean.service).
+// Unit returns the instance's systemd unit name (e.g. carla@clean.service).
 func (a *App) Unit() string {
 	return a.Kind + "@" + a.Name + ".service"
 }
 
 var nameRe = regexp.MustCompile(`^[a-zA-Z0-9_-]+$`)
 
-// Load lit, applique les défauts et valide un manifeste.
+// Load reads a manifest, applies defaults and validates it.
 func Load(path string) (*Manifest, error) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -95,9 +95,9 @@ func (m *Manifest) applyDefaults() {
 	for sName, s := range m.Sessions {
 		for _, a := range s.Apps {
 			if a.Name == "" {
-				// Convention : un seul exemplaire d'un kind par session se
-				// passe de nom. Deux → nom explicite obligatoire (sinon les
-				// noms défautés collisionnent et Validate refuse le manifeste).
+				// Convention: a single instance of a kind per session can
+				// skip its name. Two → an explicit name is required (otherwise
+				// the defaulted names collide and Validate rejects the manifest).
 				a.Name = sName + "-" + a.Kind
 			}
 			if a.Kind == KindSooperLooper {
@@ -118,33 +118,33 @@ func (m *Manifest) applyDefaults() {
 	}
 }
 
-// Validate vérifie la cohérence globale du manifeste.
+// Validate checks the manifest's overall consistency.
 func (m *Manifest) Validate() error {
 	if len(m.Sessions) == 0 {
-		return fmt.Errorf("aucune session définie")
+		return fmt.Errorf("no sessions defined")
 	}
 	seen := map[string]string{} // name -> session
-	ports := map[int]string{}   // port OSC -> instance
+	ports := map[int]string{}   // OSC port -> instance
 	for sName, s := range m.Sessions {
 		if !nameRe.MatchString(sName) {
-			return fmt.Errorf("session %q: nom invalide (autorisé: [a-zA-Z0-9_-])", sName)
+			return fmt.Errorf("session %q: invalid name (allowed: [a-zA-Z0-9_-])", sName)
 		}
 		if len(s.Apps) == 0 {
-			return fmt.Errorf("session %q: aucune app", sName)
+			return fmt.Errorf("session %q: no apps", sName)
 		}
 		for _, a := range s.Apps {
 			if !nameRe.MatchString(a.Name) {
-				return fmt.Errorf("session %q: app %q: nom invalide (autorisé: [a-zA-Z0-9_-])", sName, a.Name)
+				return fmt.Errorf("session %q: app %q: invalid name (allowed: [a-zA-Z0-9_-])", sName, a.Name)
 			}
 			if other, dup := seen[a.Name]; dup {
-				return fmt.Errorf("instance %q définie dans les sessions %q et %q: les noms d'instance doivent être uniques sur tout le manifeste", a.Name, other, sName)
+				return fmt.Errorf("instance %q defined in sessions %q and %q: instance names must be unique across the whole manifest", a.Name, other, sName)
 			}
 			seen[a.Name] = sName
 
 			switch a.Kind {
 			case KindCarla:
 				if a.Preset == "" {
-					return fmt.Errorf("session %q: carla %q: champ 'preset' requis", sName, a.Name)
+					return fmt.Errorf("session %q: carla %q: 'preset' field required", sName, a.Name)
 				}
 				if a.OSCTCPPort != 0 {
 					if err := claimPort(ports, a.OSCTCPPort, a.Name); err != nil {
@@ -153,18 +153,18 @@ func (m *Manifest) Validate() error {
 				}
 			case KindHydrogen:
 				if a.Song == "" {
-					return fmt.Errorf("session %q: hydrogen %q: champ 'song' requis", sName, a.Name)
+					return fmt.Errorf("session %q: hydrogen %q: 'song' field required", sName, a.Name)
 				}
 			case KindSooperLooper:
 				if err := claimPort(ports, a.OSCPort, a.Name); err != nil {
 					return err
 				}
 			default:
-				return fmt.Errorf("session %q: app %q: kind %q inconnu (supportés: carla, hydrogen, sooperlooper)", sName, a.Name, a.Kind)
+				return fmt.Errorf("session %q: app %q: unknown kind %q (supported: carla, hydrogen, sooperlooper)", sName, a.Name, a.Kind)
 			}
 		}
 		if s.Patchbay != nil && s.Patchbay.File == "" {
-			return fmt.Errorf("session %q: patchbay sans champ 'file'", sName)
+			return fmt.Errorf("session %q: patchbay missing 'file' field", sName)
 		}
 	}
 	return nil
@@ -172,13 +172,13 @@ func (m *Manifest) Validate() error {
 
 func claimPort(ports map[int]string, port int, instance string) error {
 	if other, dup := ports[port]; dup {
-		return fmt.Errorf("port OSC %d utilisé par %q et %q", port, other, instance)
+		return fmt.Errorf("OSC port %d used by both %q and %q", port, other, instance)
 	}
 	ports[port] = instance
 	return nil
 }
 
-// Resolve rend absolu un chemin du manifeste (relatif au répertoire du manifeste).
+// Resolve makes a manifest path absolute (relative to the manifest's directory).
 func (m *Manifest) Resolve(p string) string {
 	if p == "" || filepath.IsAbs(p) {
 		return p
@@ -186,7 +186,7 @@ func (m *Manifest) Resolve(p string) string {
 	return filepath.Join(m.Dir, p)
 }
 
-// SessionNames retourne les noms de session triés.
+// SessionNames returns the sorted session names.
 func (m *Manifest) SessionNames() []string {
 	names := make([]string, 0, len(m.Sessions))
 	for n := range m.Sessions {
@@ -196,7 +196,7 @@ func (m *Manifest) SessionNames() []string {
 	return names
 }
 
-// AppNames retourne les noms d'instance triés, toutes sessions confondues.
+// AppNames returns the sorted instance names across all sessions.
 func (m *Manifest) AppNames() []string {
 	var names []string
 	for _, s := range m.Sessions {
@@ -208,7 +208,7 @@ func (m *Manifest) AppNames() []string {
 	return names
 }
 
-// FindApp cherche une instance par nom dans toutes les sessions.
+// FindApp looks up an instance by name across all sessions.
 func (m *Manifest) FindApp(name string) (*App, bool) {
 	for _, sName := range m.SessionNames() {
 		for _, a := range m.Sessions[sName].Apps {
@@ -220,11 +220,12 @@ func (m *Manifest) FindApp(name string) (*App, bool) {
 	return nil, false
 }
 
-// ResolveApp résout l'argument d'une commande visant une instance. Accepte un
-// nom exact ou, à défaut, un kind : si une seule instance de ce kind existe,
-// pas besoin d'écrire le nom complet <session>-<kind> (ex: "carla" → l'unique
-// instance carla). L'argument est résolu sur le kind réel, pas sur le nom
-// défauté, donc le raccourci marche même si l'instance porte un nom explicite.
+// ResolveApp resolves a command argument targeting an instance. It accepts an
+// exact name or, failing that, a kind: if exactly one instance of that kind
+// exists, there's no need to spell out the full <session>-<kind> name (e.g.
+// "carla" → the single carla instance). The argument is resolved against the
+// real kind, not the defaulted name, so the shortcut works even when the
+// instance has an explicit name.
 func (m *Manifest) ResolveApp(arg string) (*App, error) {
 	if a, ok := m.FindApp(arg); ok {
 		return a, nil
@@ -242,15 +243,15 @@ func (m *Manifest) ResolveApp(arg string) (*App, error) {
 		return byKind[0], nil
 	case 0:
 		if _, isSession := m.Sessions[arg]; isSession {
-			return nil, fmt.Errorf("%q est une session, pas une instance — stomp ui s'attache à une app (instances: %v)", arg, m.AppNames())
+			return nil, fmt.Errorf("%q is a session, not an instance — stomp ui targets an app (instances: %v)", arg, m.AppNames())
 		}
-		return nil, fmt.Errorf("instance %q introuvable (instances: %v)", arg, m.AppNames())
+		return nil, fmt.Errorf("instance %q not found (instances: %v)", arg, m.AppNames())
 	default:
 		names := make([]string, len(byKind))
 		for i, a := range byKind {
 			names[i] = a.Name
 		}
 		sort.Strings(names)
-		return nil, fmt.Errorf("plusieurs instances de kind %q: préciser le nom (%v)", arg, names)
+		return nil, fmt.Errorf("multiple instances of kind %q: specify the name (%v)", arg, names)
 	}
 }

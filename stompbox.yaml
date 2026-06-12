@@ -1,40 +1,40 @@
-# Manifeste Stompbox — la source de vérité des sessions du studio.
-# Les chemins relatifs sont résolus par rapport à ce fichier.
-# Après modification : stomp apply, puis stomp on <session>.
+# Stompbox manifest — the source of truth for the studio's sessions.
+# Relative paths are resolved against this file.
+# After modification: stomp apply, then stomp on <session>.
 #
-# Session migrée depuis ~/Ray Sessions/homestudio (RaySession) :
-# Scarlett 2i2 + pédalier Morningstar MC8 + ampli sim (Ratatouille/NAM).
+# Session migrated from ~/Ray Sessions/homestudio (RaySession):
+# Scarlett 2i2 + Morningstar MC8 pedalboard + amp sim (Ratatouille/NAM).
 sessions:
   bossa:
     apps:
       - kind: carla
-        # name omis → défaut "bossa-carla" ; IHM : stomp ui carla
+        # name omitted → default "bossa-carla"; UI: stomp ui carla
         preset: presets/jazz.carxp     # carla-patchbay "Jazz" (Ratatouille)
         osc_tcp_port: 1455
-      # Un 2e carla impose un name explicite (sinon collision "bossa-carla") :
+      # A 2nd carla requires an explicit name (otherwise collision "bossa-carla"):
       # - kind: carla
       #   name: bass
       #   preset: presets/bass.carxp
       #   osc_tcp_port: 1456
       - kind: hydrogen
-        # name omis → défaut "bossa-hydrogen"
+        # name omitted → default "bossa-hydrogen"
         song: songs/homestudio.h2song
       - kind: sooperlooper
-        # name omis → défaut "bossa-sooperlooper" ; IHM : stomp ui sooperlooper
+        # name omitted → default "bossa-sooperlooper"; UI: stomp ui sooperlooper
         osc_port: 9951
         loops: 1
         channels: 2
         looptime: 60
         midi_binding: midi/footswitch.slb   # Morningstar MC8 → SooperLooper
     patchbay:
-      # À créer une fois : câbler dans qpwgraph, sauvegarder le patchbay ici.
-      # Le câblage source est documenté dans patchbays/homestudio.raypatch.xml
-      # (export ray-jackpatch de l'ancienne session RaySession).
+      # To create once: wire it up in qpwgraph, save the patchbay here.
+      # The source wiring is documented in patchbays/homestudio.raypatch.xml
+      # (ray-jackpatch export from the old RaySession session).
       file: patchbays/default.qpwgraph
       exclusive: false
 
-  # Profil funk : ampli clean claquant (NAM 6505 clean + IR Fender Tweed),
-  # pédales compresseur → chorus (cf. presets/funk.carxp).
+  # Funk profile: punchy clean amp (NAM 6505 clean + IR Fender Tweed),
+  # compressor → chorus pedals (see presets/funk.carxp).
   funk:
     apps:
       - kind: carla
@@ -45,10 +45,10 @@ sessions:
         loops: 1
         channels: 2
         looptime: 60
-    # patchbay: à câbler dans qpwgraph puis sauvegarder, comme pour bossa.
+    # patchbay: wire up in qpwgraph then save, as for bossa.
 
-  # Profil blues : crunch edge-of-breakup (NAM Marshall JT100 + IR JCM2000),
-  # pédales Tubescreamer → delay (cf. presets/blues.carxp).
+  # Blues profile: edge-of-breakup crunch (NAM Marshall JT100 + IR JCM2000),
+  # Tubescreamer → delay pedals (see presets/blues.carxp).
   blues:
     apps:
       - kind: carla

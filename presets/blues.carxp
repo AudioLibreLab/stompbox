@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE CARLA-PROJECT>
-<!-- Profil blues : Tubescreamer (TS9) → Ratatouille (NAM ampli + IR baffle) → delay.
-     Modèle NAM et IR pointés en chemin absolu (paramètres patch:writable de
-     Ratatouille sérialisés par Carla en CustomData atom:Path).
-     Câblage interne mono jusqu'au delay, qui ouvre le signal en stéréo. -->
+<!-- Blues profile: Tubescreamer (TS9) → Ratatouille (NAM amp + IR cab) → delay.
+     NAM model and IR pointed to via absolute paths (Ratatouille's
+     patch:writable parameters serialized by Carla as CustomData atom:Path).
+     Internal wiring is mono up to the delay, which opens the signal to stereo. -->
 <CARLA-PROJECT VERSION='2.5'>
  <EngineSettings>
   <ForceStereo>false</ForceStereo>
@@ -18,7 +18,7 @@
   <BeatsPerMinute>120</BeatsPerMinute>
  </Transport>
 
- <!-- TS9 en tête : l'overdrive transparent qui pousse l'ampli en crunch bluesy. -->
+ <!-- TS9 up front: the transparent overdrive that pushes the amp into bluesy crunch. -->
  <Plugin>
   <Info>
    <Type>LV2</Type>
@@ -32,7 +32,7 @@
   </Data>
  </Plugin>
 
- <!-- Ratatouille : charge le modèle NAM (ampli) et l'IR (baffle) en une boîte. -->
+ <!-- Ratatouille: loads the NAM model (amp) and the IR (cab) in one box. -->
  <Plugin>
   <Info>
    <Type>LV2</Type>
@@ -57,7 +57,7 @@
   </Data>
  </Plugin>
 
- <!-- Delay vintage stéréo Calf : les répétitions chaudes du blues lead. -->
+ <!-- Calf stereo vintage delay: the warm repeats for blues lead. -->
  <Plugin>
   <Info>
    <Type>LV2</Type>

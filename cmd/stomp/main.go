@@ -1,10 +1,11 @@
-// stomp — la pédale du studio. Génère des units systemd user depuis un
-// manifeste déclaratif et pilote les sessions audio (Audio as Code).
+// stomp — the studio's stompbox. Generates systemd user units from a
+// declarative manifest and drives audio sessions (Audio as Code).
 package main
 
 import (
 	"flag"
 	"fmt"
+	"log/slog"
 	"os"
 	"os/exec"
 	"path/filepath"
@@ -15,20 +16,21 @@ import (
 	"github.com/AudioLibreLab/stompbox/internal/systemd"
 )
 
-const usage = `stomp — Audio as Code pour studio personnel (PipeWire + systemd user)
+const usage = `stomp — Audio as Code for a personal studio (PipeWire + systemd user)
 
-Usage: stomp <commande> [options]
+Usage: stomp <command> [options]
 
-Commandes:
-  render   Génère les units systemd et fichiers d'env dans un répertoire
-  apply    Génère et installe dans ~/.config (+ daemon-reload)
-  on       Démarre une session:   stomp on <session>
-  off      Arrête une session (ou toutes): stomp off [session]
-  status   État des sessions et de leurs apps
-  ui       Ouvre l'IHM d'une instance:  stomp ui <instance|kind>
+Commands:
+  render   Generate systemd units and env files into a directory
+  apply    Generate and install into ~/.config (+ daemon-reload)
+  on       Start a session:   stomp on <session>
+  off      Stop a session (or all): stomp off [session]
+  status   State of the sessions and their apps
+  ui       Open an instance's UI:  stomp ui <instance|kind>
 
-Options communes:
-  -f <fichier>   Manifeste (défaut: stompbox.yaml)
+Common options:
+  -f <file>   Manifest (default: stompbox.yaml)
+  -v          Verbose logging (debug level)
 `
 
 func main() {
@@ -53,7 +55,7 @@ func main() {
 	case "help", "-h", "--help":
 		fmt.Print(usage)
 	default:
-		fmt.Fprintf(os.Stderr, "stomp: commande inconnue %q\n\n%s", cmd, usage)
+		fmt.Fprintf(os.Stderr, "stomp: unknown command %q\n\n%s", cmd, usage)
 		os.Exit(2)
 	}
 	if err != nil {
@@ -62,25 +64,49 @@ func main() {
 	}
 }
 
-// manifestFlag déclare -f sur un FlagSet et parse les arguments.
+// setupLogging configures the default slog logger. By default only warnings
+// and errors are shown; -v enables debug-level diagnostics.
+func setupLogging(verbose bool) {
+	level := slog.LevelInfo
+	if verbose {
+		level = slog.LevelDebug
+	}
+	h := slog.NewTextHandler(os.Stderr, &slog.HandlerOptions{
+		Level: level,
+		ReplaceAttr: func(groups []string, a slog.Attr) slog.Attr {
+			if a.Key == slog.TimeKey {
+				return slog.Attr{}
+			}
+			return a
+		},
+	})
+	slog.SetDefault(slog.New(h))
+}
+
+// loadManifest declares the common -f/-v flags on a FlagSet, parses args,
+// configures logging and loads the manifest.
 func loadManifest(fs *flag.FlagSet, args []string) (*manifest.Manifest, error) {
-	path := fs.String("f", "stompbox.yaml", "chemin du manifeste")
+	path := fs.String("f", "stompbox.yaml", "manifest path")
+	verbose := fs.Bool("v", false, "verbose logging (debug level)")
 	if err := fs.Parse(args); err != nil {
 		return nil, err
 	}
+	setupLogging(*verbose)
+	slog.Debug("loading manifest", "path", *path)
 	m, err := manifest.Load(*path)
 	if err != nil {
 		return nil, err
 	}
+	slog.Debug("manifest loaded", "sessions", m.SessionNames())
 	for _, w := range render.CheckPaths(m) {
-		fmt.Fprintln(os.Stderr, "stomp: attention:", w)
+		slog.Warn(w)
 	}
 	return m, nil
 }
 
 func cmdRender(args []string) error {
 	fs := flag.NewFlagSet("render", flag.ExitOnError)
-	out := fs.String("o", "rendered", "répertoire de sortie")
+	out := fs.String("o", "rendered", "output directory")
 	m, err := loadManifest(fs, args)
 	if err != nil {
 		return err
@@ -89,11 +115,13 @@ func cmdRender(args []string) error {
 	if err != nil {
 		return err
 	}
+	slog.Debug("rendered files", "count", len(files), "output_dir", *out)
 	for _, f := range files {
-		if err := writeFile(filepath.Join(*out, f.Path), f.Content); err != nil {
+		dst := filepath.Join(*out, f.Path)
+		if err := writeFile(dst, f.Content); err != nil {
 			return err
 		}
-		fmt.Println(filepath.Join(*out, f.Path))
+		fmt.Println(dst)
 	}
 	return nil
 }
@@ -112,6 +140,7 @@ func cmdApply(args []string) error {
 	if err != nil {
 		return err
 	}
+	slog.Debug("installing files", "count", len(files), "config_dir", confDir)
 	for _, f := range files {
 		if err := writeFile(filepath.Join(confDir, f.Path), f.Content); err != nil {
 			return err
@@ -121,7 +150,7 @@ func cmdApply(args []string) error {
 	if err := sd.DaemonReload(); err != nil {
 		return err
 	}
-	fmt.Printf("stomp: %d fichiers installés dans %s, units rechargés\n", len(files), confDir)
+	fmt.Printf("stomp: %d files installed in %s, units reloaded\n", len(files), confDir)
 	for _, s := range m.SessionNames() {
 		fmt.Printf("  session %-20s → stomp on %s\n", s, s)
 	}
@@ -139,17 +168,18 @@ func cmdOn(args []string) error {
 		return fmt.Errorf("usage: stomp on <session> (sessions: %v)", m.SessionNames())
 	}
 	if _, ok := m.Sessions[session]; !ok {
-		return fmt.Errorf("session %q inconnue (sessions: %v)", session, m.SessionNames())
+		return fmt.Errorf("unknown session %q (sessions: %v)", session, m.SessionNames())
 	}
 	sd := &systemd.Client{}
-	// Sécurité Wayland : pousser l'env graphique avant de lancer les IHM.
+	// Wayland safety: push the graphical env before launching UIs.
 	if err := sd.ImportGraphicalEnv(); err != nil {
-		fmt.Fprintln(os.Stderr, "stomp: attention:", err)
+		slog.Warn(err.Error())
 	}
+	slog.Debug("starting session", "session", session, "target", session+".target")
 	if err := sd.Start(session + ".target"); err != nil {
 		return err
 	}
-	fmt.Printf("stomp: session %q démarrée 🎸\n", session)
+	fmt.Printf("stomp: session %q started 🎸\n", session)
 	return nil
 }
 
@@ -163,19 +193,20 @@ func cmdOff(args []string) error {
 	if fs.Arg(0) == "" {
 		sessions = m.SessionNames()
 	} else if _, ok := m.Sessions[fs.Arg(0)]; !ok {
-		return fmt.Errorf("session %q inconnue (sessions: %v)", fs.Arg(0), m.SessionNames())
+		return fmt.Errorf("unknown session %q (sessions: %v)", fs.Arg(0), m.SessionNames())
 	}
 	var targets []string
 	for _, s := range sessions {
 		targets = append(targets, s+".target")
 	}
 	sd := &systemd.Client{}
-	// StopWhenUnneeded=yes dans les gabarits : arrêter les targets
-	// suffit à arrêter toutes les instances.
+	// StopWhenUnneeded=yes in the templates: stopping the targets
+	// is enough to stop all the instances.
+	slog.Debug("stopping targets", "targets", targets)
 	if err := sd.Stop(targets...); err != nil {
 		return err
 	}
-	fmt.Printf("stomp: arrêté: %v\n", sessions)
+	fmt.Printf("stomp: stopped: %v\n", sessions)
 	return nil
 }
 
@@ -214,10 +245,11 @@ func cmdUI(args []string) error {
 	if err != nil {
 		return err
 	}
+	slog.Debug("resolved instance", "arg", name, "name", app.Name, "kind", app.Kind)
 	switch app.Kind {
 	case manifest.KindSooperLooper:
-		// -N : ne jamais relancer de moteur, on s'attache à celui de systemd.
-		// L'IHM est jetable : la fermer n'interrompt pas les boucles.
+		// -N: never spawn a new engine, attach to the one started by systemd.
+		// The UI is throwaway: closing it doesn't interrupt the loops.
 		cmd := exec.Command("slgui", "-N", "-P", strconv.Itoa(app.OSCPort))
 		if err := cmd.Start(); err != nil {
 			return err
@@ -225,13 +257,13 @@ func cmdUI(args []string) error {
 		if err := cmd.Process.Release(); err != nil {
 			return err
 		}
-		fmt.Printf("stomp: slgui attaché au moteur %q (port OSC %d)\n", name, app.OSCPort)
+		fmt.Printf("stomp: slgui attached to engine %q (OSC port %d)\n", app.Name, app.OSCPort)
 		return nil
 	case manifest.KindCarla:
 		if app.OSCTCPPort == 0 {
-			return fmt.Errorf("carla %q: 'osc_tcp_port' requis dans le manifeste pour attacher carla-control", name)
+			return fmt.Errorf("carla %q: 'osc_tcp_port' required in the manifest to attach carla-control", app.Name)
 		}
-		// L'IHM est jetable : la fermer ne touche pas le host headless.
+		// The UI is throwaway: closing it doesn't affect the headless host.
 		cmd := exec.Command("carla-control", fmt.Sprintf("osc.tcp://127.0.0.1:%d/Carla", app.OSCTCPPort))
 		if err := cmd.Start(); err != nil {
 			return err
@@ -239,10 +271,10 @@ func cmdUI(args []string) error {
 		if err := cmd.Process.Release(); err != nil {
 			return err
 		}
-		fmt.Printf("stomp: carla-control attaché au host %q (port OSC TCP %d)\n", name, app.OSCTCPPort)
+		fmt.Printf("stomp: carla-control attached to host %q (OSC TCP port %d)\n", app.Name, app.OSCTCPPort)
 		return nil
 	default:
-		return fmt.Errorf("pas d'IHM détachable pour le kind %q", app.Kind)
+		return fmt.Errorf("no detachable UI for kind %q", app.Kind)
 	}
 }
 

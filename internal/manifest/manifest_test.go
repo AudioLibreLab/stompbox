@@ -39,11 +39,11 @@ func TestLoadValidAppliesDefaults(t *testing.T) {
 	}
 	app, ok := m.FindApp("looper")
 	if !ok {
-		t.Fatal("instance looper introuvable")
+		t.Fatal("instance looper not found")
 	}
-	// Défauts alignés sur ceux de sooperlooper(1).
+	// Defaults aligned with sooperlooper(1).
 	if app.OSCPort != 9951 || app.Loops != 1 || app.Channels != 2 || app.LoopTime != 40 {
-		t.Errorf("défauts sooperlooper incorrects: %+v", app)
+		t.Errorf("incorrect sooperlooper defaults: %+v", app)
 	}
 	if got := app.Unit(); got != "sooperlooper@looper.service" {
 		t.Errorf("Unit() = %q", got)
@@ -64,12 +64,12 @@ sessions:
 	if err != nil {
 		t.Fatal(err)
 	}
-	// name omis → <session>-<kind>.
+	// name omitted → <session>-<kind>.
 	if got := strings.Join(m.AppNames(), " "); got != "bossa-carla bossa-hydrogen" {
 		t.Errorf("AppNames() = %q", got)
 	}
 	if _, ok := m.FindApp("bossa-carla"); !ok {
-		t.Error("bossa-carla introuvable")
+		t.Error("bossa-carla not found")
 	}
 }
 
@@ -78,21 +78,21 @@ func TestResolveApp(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	// Raccourci par kind : une seule instance carla.
+	// Shortcut by kind: a single carla instance.
 	if a, err := m.ResolveApp("carla"); err != nil || a.Name != "clean" {
 		t.Errorf("ResolveApp(carla) = %v, %v", a, err)
 	}
-	// Nom exact.
+	// Exact name.
 	if a, err := m.ResolveApp("looper"); err != nil || a.Kind != KindSooperLooper {
 		t.Errorf("ResolveApp(looper) = %v, %v", a, err)
 	}
-	// Nom de session → erreur explicite.
+	// Session name → explicit error.
 	if _, err := m.ResolveApp("bossa"); err == nil || !strings.Contains(err.Error(), "session") {
 		t.Errorf("ResolveApp(bossa) err = %v", err)
 	}
-	// Inconnu.
+	// Unknown.
 	if _, err := m.ResolveApp("zorglub"); err == nil {
-		t.Error("ResolveApp(zorglub) devrait échouer")
+		t.Error("ResolveApp(zorglub) should fail")
 	}
 }
 
@@ -101,34 +101,34 @@ func TestValidateErrors(t *testing.T) {
 		yaml    string
 		wantErr string
 	}{
-		"kind inconnu": {
+		"unknown kind": {
 			yaml: `
 sessions:
   s:
     apps:
       - {kind: ardour, name: x}
 `,
-			wantErr: "kind \"ardour\" inconnu",
+			wantErr: `unknown kind "ardour"`,
 		},
-		"preset carla manquant": {
+		"missing carla preset": {
 			yaml: `
 sessions:
   s:
     apps:
       - {kind: carla, name: x}
 `,
-			wantErr: "'preset' requis",
+			wantErr: "'preset' field required",
 		},
-		"song hydrogen manquant": {
+		"missing hydrogen song": {
 			yaml: `
 sessions:
   s:
     apps:
       - {kind: hydrogen, name: x}
 `,
-			wantErr: "'song' requis",
+			wantErr: "'song' field required",
 		},
-		"instance dupliquée entre sessions": {
+		"duplicate instance across sessions": {
 			yaml: `
 sessions:
   a:
@@ -138,9 +138,9 @@ sessions:
     apps:
       - {kind: carla, name: x, preset: q.carla}
 `,
-			wantErr: "uniques",
+			wantErr: "unique",
 		},
-		"noms identiques entre kinds différents": {
+		"same name across different kinds": {
 			yaml: `
 sessions:
   s:
@@ -148,9 +148,9 @@ sessions:
       - {kind: carla, name: x, preset: p.carla}
       - {kind: hydrogen, name: x, song: s.h2song}
 `,
-			wantErr: "uniques",
+			wantErr: "unique",
 		},
-		"deux carla sans name (noms défautés collisionnent)": {
+		"two carla without name (defaulted names collide)": {
 			yaml: `
 sessions:
   s:
@@ -158,9 +158,9 @@ sessions:
       - {kind: carla, preset: p.carla}
       - {kind: carla, preset: q.carla}
 `,
-			wantErr: "uniques",
+			wantErr: "unique",
 		},
-		"port OSC dupliqué": {
+		"duplicate OSC port": {
 			yaml: `
 sessions:
   s:
@@ -168,18 +168,18 @@ sessions:
       - {kind: sooperlooper, name: a, osc_port: 9000}
       - {kind: sooperlooper, name: b, osc_port: 9000}
 `,
-			wantErr: "port OSC 9000",
+			wantErr: "OSC port 9000",
 		},
-		"nom d'instance invalide": {
+		"invalid instance name": {
 			yaml: `
 sessions:
   s:
     apps:
       - {kind: carla, name: "a b", preset: p.carla}
 `,
-			wantErr: "nom invalide",
+			wantErr: "invalid name",
 		},
-		"patchbay sans fichier": {
+		"patchbay without file": {
 			yaml: `
 sessions:
   s:
@@ -188,21 +188,21 @@ sessions:
     patchbay:
       exclusive: true
 `,
-			wantErr: "patchbay sans champ 'file'",
+			wantErr: "missing 'file'",
 		},
-		"manifeste vide": {
+		"empty manifest": {
 			yaml:    `sessions: {}`,
-			wantErr: "aucune session",
+			wantErr: "no sessions",
 		},
 	}
 	for name, tc := range cases {
 		t.Run(name, func(t *testing.T) {
 			_, err := load(t, tc.yaml)
 			if err == nil {
-				t.Fatalf("erreur attendue contenant %q, obtenu nil", tc.wantErr)
+				t.Fatalf("expected error containing %q, got nil", tc.wantErr)
 			}
 			if !strings.Contains(err.Error(), tc.wantErr) {
-				t.Errorf("erreur %q ne contient pas %q", err, tc.wantErr)
+				t.Errorf("error %q does not contain %q", err, tc.wantErr)
 			}
 		})
 	}
@@ -214,9 +214,9 @@ func TestResolve(t *testing.T) {
 		t.Fatal(err)
 	}
 	if got := m.Resolve("/abs/p.carla"); got != "/abs/p.carla" {
-		t.Errorf("chemin absolu modifié: %q", got)
+		t.Errorf("absolute path modified: %q", got)
 	}
 	if got := m.Resolve("presets/p.carla"); got != filepath.Join(m.Dir, "presets/p.carla") {
-		t.Errorf("chemin relatif mal résolu: %q", got)
+		t.Errorf("relative path incorrectly resolved: %q", got)
 	}
 }

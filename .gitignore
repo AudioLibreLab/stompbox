@@ -1,8 +1,8 @@
-# Binaire local
+# Local binary
 /stomp
 
-# Sortie de `stomp render`
+# Output of `stomp render`
 /rendered/
 
-# Autosaves Hydrogen (état, pas de la config)
+# Hydrogen autosaves (state, not config)
 .*.autosave.h2song

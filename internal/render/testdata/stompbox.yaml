@@ -1,4 +1,4 @@
-# Manifeste de test couvrant tous les kinds et options.
+# Test manifest covering all kinds and options.
 sessions:
   bossa:
     apps:
@@ -27,7 +27,7 @@ sessions:
         preset: /abs/path/dirty.carla
       - kind: sooperlooper
         name: jam_looper
-        # défauts: osc_port 9951 interdit (dupliqué) → port explicite
+        # defaults: osc_port 9951 forbidden (duplicate) → explicit port
         osc_port: 9952
     patchbay:
       file: patchbays/jam.qpwgraph
