@@ -48,6 +48,52 @@ func TestLoadValidAppliesDefaults(t *testing.T) {
 	if got := app.Unit(); got != "sooperlooper@looper.service" {
 		t.Errorf("Unit() = %q", got)
 	}
+	if got := strings.Join(m.AppNames(), " "); got != "clean groove looper" {
+		t.Errorf("AppNames() = %q", got)
+	}
+}
+
+func TestDefaultName(t *testing.T) {
+	m, err := load(t, `
+sessions:
+  bossa:
+    apps:
+      - {kind: carla, preset: p.carla}
+      - {kind: hydrogen, song: s.h2song}
+`)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// name omis → <session>-<kind>.
+	if got := strings.Join(m.AppNames(), " "); got != "bossa-carla bossa-hydrogen" {
+		t.Errorf("AppNames() = %q", got)
+	}
+	if _, ok := m.FindApp("bossa-carla"); !ok {
+		t.Error("bossa-carla introuvable")
+	}
+}
+
+func TestResolveApp(t *testing.T) {
+	m, err := load(t, valid)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// Raccourci par kind : une seule instance carla.
+	if a, err := m.ResolveApp("carla"); err != nil || a.Name != "clean" {
+		t.Errorf("ResolveApp(carla) = %v, %v", a, err)
+	}
+	// Nom exact.
+	if a, err := m.ResolveApp("looper"); err != nil || a.Kind != KindSooperLooper {
+		t.Errorf("ResolveApp(looper) = %v, %v", a, err)
+	}
+	// Nom de session → erreur explicite.
+	if _, err := m.ResolveApp("bossa"); err == nil || !strings.Contains(err.Error(), "session") {
+		t.Errorf("ResolveApp(bossa) err = %v", err)
+	}
+	// Inconnu.
+	if _, err := m.ResolveApp("zorglub"); err == nil {
+		t.Error("ResolveApp(zorglub) devrait échouer")
+	}
 }
 
 func TestValidateErrors(t *testing.T) {
@@ -91,6 +137,26 @@ sessions:
   b:
     apps:
       - {kind: carla, name: x, preset: q.carla}
+`,
+			wantErr: "uniques",
+		},
+		"noms identiques entre kinds différents": {
+			yaml: `
+sessions:
+  s:
+    apps:
+      - {kind: carla, name: x, preset: p.carla}
+      - {kind: hydrogen, name: x, song: s.h2song}
+`,
+			wantErr: "uniques",
+		},
+		"deux carla sans name (noms défautés collisionnent)": {
+			yaml: `
+sessions:
+  s:
+    apps:
+      - {kind: carla, preset: p.carla}
+      - {kind: carla, preset: q.carla}
 `,
 			wantErr: "uniques",
 		},

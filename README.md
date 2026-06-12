@@ -50,7 +50,7 @@ $ ./stomp on bossa       # 🎸
 | `stomp on <session>` | Importe l'env Wayland puis démarre `<session>.target` |
 | `stomp off [session]` | Arrête une session, ou toutes si omis |
 | `stomp status` | État du target et des units de chaque session |
-| `stomp gui <instance>` | Ouvre l'IHM (slgui attaché au moteur SooperLooper) |
+| `stomp ui <instance\|kind>` | Ouvre l'IHM jetable (carla-control / slgui attaché au moteur). Un kind suffit s'il n'a qu'une instance |
 
 Toutes acceptent `-f <manifeste>` (défaut : `stompbox.yaml`).
 
@@ -60,15 +60,14 @@ Toutes acceptent `-f <manifeste>` (défaut : `stompbox.yaml`).
 sessions:
   bossa:
     apps:
-      - kind: carla            # carla --no-gui (ou IHM si gui: true)
-        name: clean
+      - kind: carla            # host headless (--no-gui), IHM via `stomp ui`
+        name: clean            # optionnel — défaut: <session>-<kind> (bossa-carla)
         preset: presets/clean.carla
         osc_tcp_port: 1455     # contrôle OSC TCP (env CARLA_OSC_TCP_PORT)
-        gui: false
       - kind: hydrogen         # hydrogen -n --driver jack -s <song>
         name: bossa_groove
         song: songs/bossa.h2song
-      - kind: sooperlooper     # moteur headless, IHM via `stomp gui`
+      - kind: sooperlooper     # moteur headless, IHM via `stomp ui`
         name: looper
         osc_port: 9951         # OSC en UDP
         loops: 2
@@ -81,9 +80,13 @@ sessions:
       exclusive: true          # -x : déconnecte ce qui n'est pas dans le fichier
 ```
 
+Le champ `name` est optionnel : par défaut une instance s'appelle
+`<session>-<kind>` (ex. `bossa-carla`). Du coup deux apps du même kind dans
+une session imposent un `name` explicite, sinon leurs noms défautés
+collisionnent.
+
 Contraintes validées au chargement : noms `[a-zA-Z0-9_-]`, noms d'instance
-uniques par kind sur tout le manifeste, ports OSC uniques, champs requis
-par kind.
+uniques sur tout le manifeste, ports OSC uniques, champs requis par kind.
 
 Les presets, songs et patchbays vivent dans le dépôt à côté du manifeste
 (chemins relatifs résolus par rapport à `stompbox.yaml`). Pour créer un

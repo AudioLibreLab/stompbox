@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE CARLA-PROJECT>
+<!-- Profil blues : Tubescreamer (TS9) → Ratatouille (NAM ampli + IR baffle) → delay.
+     Modèle NAM et IR pointés en chemin absolu (paramètres patch:writable de
+     Ratatouille sérialisés par Carla en CustomData atom:Path).
+     Câblage interne mono jusqu'au delay, qui ouvre le signal en stéréo. -->
+<CARLA-PROJECT VERSION='2.5'>
+ <EngineSettings>
+  <ForceStereo>false</ForceStereo>
+  <PreferPluginBridges>false</PreferPluginBridges>
+  <PreferUiBridges>true</PreferUiBridges>
+  <UIsAlwaysOnTop>false</UIsAlwaysOnTop>
+  <MaxParameters>200</MaxParameters>
+  <UIBridgesTimeout>4000</UIBridgesTimeout>
+ </EngineSettings>
+
+ <Transport>
+  <BeatsPerMinute>120</BeatsPerMinute>
+ </Transport>
+
+ <!-- TS9 en tête : l'overdrive transparent qui pousse l'ampli en crunch bluesy. -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Gxts9sim</Name>
+   <URI>http://guitarix.sourceforge.net/plugins/gxts9#ts9sim</URI>
+  </Info>
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x0</Options>
+  </Data>
+ </Plugin>
+
+ <!-- Ratatouille : charge le modèle NAM (ampli) et l'IR (baffle) en une boîte. -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Ratatouille</Name>
+   <URI>urn:brummer:ratatouille</URI>
+  </Info>
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x0</Options>
+
+   <CustomData>
+    <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
+    <Key>urn:brummer:ratatouille#Neural_Model</Key>
+    <Value>/home/fjammes/Music/NAM/AmpHead/amalgam MRSH JT100 I Crunch BAL DI.nam</Value>
+   </CustomData>
+   <CustomData>
+    <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
+    <Key>urn:brummer:ratatouille#irfile</Key>
+    <Value>/home/fjammes/Music/IRs/guitar/Marshall JCM2000 SM57.wav</Value>
+   </CustomData>
+  </Data>
+ </Plugin>
+
+ <!-- Delay vintage stéréo Calf : les répétitions chaudes du blues lead. -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Calf Vintage Delay</Name>
+   <URI>http://calf.sourceforge.net/plugins/VintageDelay</URI>
+  </Info>
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x0</Options>
+  </Data>
+ </Plugin>
+
+ <Patchbay>
+  <Connection>
+   <Source>Audio Input:Left</Source>
+   <Target>Gxts9sim:in</Target>
+  </Connection>
+  <Connection>
+   <Source>Gxts9sim:Out</Source>
+   <Target>Ratatouille:In0</Target>
+  </Connection>
+  <Connection>
+   <Source>Ratatouille:Out0</Source>
+   <Target>Calf Vintage Delay:In L</Target>
+  </Connection>
+  <Connection>
+   <Source>Ratatouille:Out0</Source>
+   <Target>Calf Vintage Delay:In R</Target>
+  </Connection>
+  <Connection>
+   <Source>Calf Vintage Delay:Out L</Source>
+   <Target>Audio Output:Left</Target>
+  </Connection>
+  <Connection>
+   <Source>Calf Vintage Delay:Out R</Source>
+   <Target>Audio Output:Right</Target>
+  </Connection>
+  <Positions>
+   <Position x1="1400" y1="1100" pluginId="0">
+    <Name>Gxts9sim</Name>
+   </Position>
+   <Position x1="1650" y1="1100" pluginId="1">
+    <Name>Ratatouille</Name>
+   </Position>
+   <Position x1="1900" y1="1100" pluginId="2">
+    <Name>Calf Vintage Delay</Name>
+   </Position>
+  </Positions>
+ </Patchbay>
+</CARLA-PROJECT>

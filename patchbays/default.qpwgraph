@@ -1,0 +1,22 @@
+<!DOCTYPE patchbay>
+<patchbay version="0.6.1" name="simple">
+ <items>
+  <item port-type="pipewire-audio" node-type="pipewire">
+   <output port="Carla:audio-out1" node="Carla"/>
+   <input port="Scarlett 2i2 USB:playback_FL" node="Scarlett 2i2 3rd Gen Stéréo analogique"/>
+  </item>
+  <item port-type="pipewire-audio" node-type="pipewire">
+   <output port="Scarlett 2i2 USB:capture_FL" node="Scarlett 2i2 3rd Gen Stéréo analogique"/>
+   <input port="Carla:audio-in1" node="Carla"/>
+  </item>
+  <item port-type="pipewire-audio" node-type="pipewire">
+   <output port="Hydrogen:out_L" node="Hydrogen"/>
+   <input port="Scarlett 2i2 USB:playback_FL" node="Scarlett 2i2 3rd Gen Stéréo analogique"/>
+  </item>
+  <item port-type="pipewire-audio" node-type="pipewire">
+   <output port="Hydrogen:out_R" node="Hydrogen"/>
+   <input port="Scarlett 2i2 USB:playback_FR" node="Scarlett 2i2 3rd Gen Stéréo analogique"/>
+  </item>
+ </items>
+</patchbay>
+

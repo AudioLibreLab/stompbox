@@ -5,31 +5,57 @@
 # Session migrée depuis ~/Ray Sessions/homestudio (RaySession) :
 # Scarlett 2i2 + pédalier Morningstar MC8 + ampli sim (Ratatouille/NAM).
 sessions:
-  homestudio:
+  bossa:
     apps:
       - kind: carla
-        name: jazz
+        # name omis → défaut "bossa-carla" ; IHM : stomp ui carla
         preset: presets/jazz.carxp     # carla-patchbay "Jazz" (Ratatouille)
         osc_tcp_port: 1455
-        gui: true                      # ampli qu'on règle à la main → IHM visible
+      # Un 2e carla impose un name explicite (sinon collision "bossa-carla") :
       # - kind: carla
       #   name: bass
       #   preset: presets/bass.carxp
       #   osc_tcp_port: 1456
-      #   gui: false
       - kind: hydrogen
-        name: groove
+        # name omis → défaut "bossa-hydrogen"
         song: songs/homestudio.h2song
       - kind: sooperlooper
-        name: looper
+        # name omis → défaut "bossa-sooperlooper" ; IHM : stomp ui sooperlooper
         osc_port: 9951
         loops: 1
         channels: 2
         looptime: 60
         midi_binding: midi/footswitch.slb   # Morningstar MC8 → SooperLooper
-#    patchbay:
+    patchbay:
       # À créer une fois : câbler dans qpwgraph, sauvegarder le patchbay ici.
       # Le câblage source est documenté dans patchbays/homestudio.raypatch.xml
       # (export ray-jackpatch de l'ancienne session RaySession).
-      #      file: patchbays/homestudio.qpwgraph
-      # exclusive: false
+      file: patchbays/default.qpwgraph
+      exclusive: false
+
+  # Profil funk : ampli clean claquant (NAM 6505 clean + IR Fender Tweed),
+  # pédales compresseur → chorus (cf. presets/funk.carxp).
+  funk:
+    apps:
+      - kind: carla
+        preset: presets/funk.carxp
+        osc_tcp_port: 1456
+      - kind: sooperlooper
+        osc_port: 9952
+        loops: 1
+        channels: 2
+        looptime: 60
+    # patchbay: à câbler dans qpwgraph puis sauvegarder, comme pour bossa.
+
+  # Profil blues : crunch edge-of-breakup (NAM Marshall JT100 + IR JCM2000),
+  # pédales Tubescreamer → delay (cf. presets/blues.carxp).
+  blues:
+    apps:
+      - kind: carla
+        preset: presets/blues.carxp
+        osc_tcp_port: 1457
+      - kind: sooperlooper
+        osc_port: 9953
+        loops: 1
+        channels: 2
+        looptime: 60

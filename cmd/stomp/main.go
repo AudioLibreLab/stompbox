@@ -25,7 +25,7 @@ Commandes:
   on       Démarre une session:   stomp on <session>
   off      Arrête une session (ou toutes): stomp off [session]
   status   État des sessions et de leurs apps
-  gui      Ouvre l'IHM d'une instance:  stomp gui <instance>
+  ui       Ouvre l'IHM d'une instance:  stomp ui <instance|kind>
 
 Options communes:
   -f <fichier>   Manifeste (défaut: stompbox.yaml)
@@ -48,8 +48,8 @@ func main() {
 		err = cmdOff(args)
 	case "status":
 		err = cmdStatus(args)
-	case "gui":
-		err = cmdGUI(args)
+	case "ui":
+		err = cmdUI(args)
 	case "help", "-h", "--help":
 		fmt.Print(usage)
 	default:
@@ -200,19 +200,19 @@ func cmdStatus(args []string) error {
 	return nil
 }
 
-func cmdGUI(args []string) error {
-	fs := flag.NewFlagSet("gui", flag.ExitOnError)
+func cmdUI(args []string) error {
+	fs := flag.NewFlagSet("ui", flag.ExitOnError)
 	m, err := loadManifest(fs, args)
 	if err != nil {
 		return err
 	}
 	name := fs.Arg(0)
 	if name == "" {
-		return fmt.Errorf("usage: stomp gui <instance>")
+		return fmt.Errorf("usage: stomp ui <instance|kind> (instances: %v)", m.AppNames())
 	}
-	app, ok := m.FindApp(name)
-	if !ok {
-		return fmt.Errorf("instance %q introuvable dans le manifeste", name)
+	app, err := m.ResolveApp(name)
+	if err != nil {
+		return err
 	}
 	switch app.Kind {
 	case manifest.KindSooperLooper:
@@ -228,10 +228,19 @@ func cmdGUI(args []string) error {
 		fmt.Printf("stomp: slgui attaché au moteur %q (port OSC %d)\n", name, app.OSCPort)
 		return nil
 	case manifest.KindCarla:
-		if app.GUI {
-			return fmt.Errorf("l'instance carla %q tourne déjà avec son IHM (gui: true)", name)
+		if app.OSCTCPPort == 0 {
+			return fmt.Errorf("carla %q: 'osc_tcp_port' requis dans le manifeste pour attacher carla-control", name)
 		}
-		return fmt.Errorf("IHM distante Carla non supportée en phase 1 — piste: carla-control osc.tcp://localhost:%d/Carla", app.OSCTCPPort)
+		// L'IHM est jetable : la fermer ne touche pas le host headless.
+		cmd := exec.Command("carla-control", fmt.Sprintf("osc.tcp://127.0.0.1:%d/Carla", app.OSCTCPPort))
+		if err := cmd.Start(); err != nil {
+			return err
+		}
+		if err := cmd.Process.Release(); err != nil {
+			return err
+		}
+		fmt.Printf("stomp: carla-control attaché au host %q (port OSC TCP %d)\n", name, app.OSCTCPPort)
+		return nil
 	default:
 		return fmt.Errorf("pas d'IHM détachable pour le kind %q", app.Kind)
 	}

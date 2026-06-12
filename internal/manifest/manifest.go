@@ -43,7 +43,6 @@ type App struct {
 	// carla
 	Preset     string `yaml:"preset"`
 	OSCTCPPort int    `yaml:"osc_tcp_port"`
-	GUI        bool   `yaml:"gui"`
 
 	// hydrogen
 	Song string `yaml:"song"`
@@ -93,8 +92,14 @@ func Load(path string) (*Manifest, error) {
 }
 
 func (m *Manifest) applyDefaults() {
-	for _, s := range m.Sessions {
+	for sName, s := range m.Sessions {
 		for _, a := range s.Apps {
+			if a.Name == "" {
+				// Convention : un seul exemplaire d'un kind par session se
+				// passe de nom. Deux → nom explicite obligatoire (sinon les
+				// noms défautés collisionnent et Validate refuse le manifeste).
+				a.Name = sName + "-" + a.Kind
+			}
 			if a.Kind == KindSooperLooper {
 				if a.OSCPort == 0 {
 					a.OSCPort = 9951
@@ -118,8 +123,8 @@ func (m *Manifest) Validate() error {
 	if len(m.Sessions) == 0 {
 		return fmt.Errorf("aucune session définie")
 	}
-	seen := map[string]string{}   // "kind@name" -> session
-	ports := map[int]string{}     // port OSC -> instance
+	seen := map[string]string{} // name -> session
+	ports := map[int]string{}   // port OSC -> instance
 	for sName, s := range m.Sessions {
 		if !nameRe.MatchString(sName) {
 			return fmt.Errorf("session %q: nom invalide (autorisé: [a-zA-Z0-9_-])", sName)
@@ -131,11 +136,10 @@ func (m *Manifest) Validate() error {
 			if !nameRe.MatchString(a.Name) {
 				return fmt.Errorf("session %q: app %q: nom invalide (autorisé: [a-zA-Z0-9_-])", sName, a.Name)
 			}
-			key := a.Kind + "@" + a.Name
-			if other, dup := seen[key]; dup {
-				return fmt.Errorf("instance %q définie dans les sessions %q et %q: les noms d'instance doivent être uniques par kind sur tout le manifeste", key, other, sName)
+			if other, dup := seen[a.Name]; dup {
+				return fmt.Errorf("instance %q définie dans les sessions %q et %q: les noms d'instance doivent être uniques sur tout le manifeste", a.Name, other, sName)
 			}
-			seen[key] = sName
+			seen[a.Name] = sName
 
 			switch a.Kind {
 			case KindCarla:
@@ -143,7 +147,7 @@ func (m *Manifest) Validate() error {
 					return fmt.Errorf("session %q: carla %q: champ 'preset' requis", sName, a.Name)
 				}
 				if a.OSCTCPPort != 0 {
-					if err := claimPort(ports, a.OSCTCPPort, key); err != nil {
+					if err := claimPort(ports, a.OSCTCPPort, a.Name); err != nil {
 						return err
 					}
 				}
@@ -152,7 +156,7 @@ func (m *Manifest) Validate() error {
 					return fmt.Errorf("session %q: hydrogen %q: champ 'song' requis", sName, a.Name)
 				}
 			case KindSooperLooper:
-				if err := claimPort(ports, a.OSCPort, key); err != nil {
+				if err := claimPort(ports, a.OSCPort, a.Name); err != nil {
 					return err
 				}
 			default:
@@ -192,6 +196,18 @@ func (m *Manifest) SessionNames() []string {
 	return names
 }
 
+// AppNames retourne les noms d'instance triés, toutes sessions confondues.
+func (m *Manifest) AppNames() []string {
+	var names []string
+	for _, s := range m.Sessions {
+		for _, a := range s.Apps {
+			names = append(names, a.Name)
+		}
+	}
+	sort.Strings(names)
+	return names
+}
+
 // FindApp cherche une instance par nom dans toutes les sessions.
 func (m *Manifest) FindApp(name string) (*App, bool) {
 	for _, sName := range m.SessionNames() {
@@ -202,4 +218,39 @@ func (m *Manifest) FindApp(name string) (*App, bool) {
 		}
 	}
 	return nil, false
+}
+
+// ResolveApp résout l'argument d'une commande visant une instance. Accepte un
+// nom exact ou, à défaut, un kind : si une seule instance de ce kind existe,
+// pas besoin d'écrire le nom complet <session>-<kind> (ex: "carla" → l'unique
+// instance carla). L'argument est résolu sur le kind réel, pas sur le nom
+// défauté, donc le raccourci marche même si l'instance porte un nom explicite.
+func (m *Manifest) ResolveApp(arg string) (*App, error) {
+	if a, ok := m.FindApp(arg); ok {
+		return a, nil
+	}
+	var byKind []*App
+	for _, sName := range m.SessionNames() {
+		for _, a := range m.Sessions[sName].Apps {
+			if a.Kind == arg {
+				byKind = append(byKind, a)
+			}
+		}
+	}
+	switch len(byKind) {
+	case 1:
+		return byKind[0], nil
+	case 0:
+		if _, isSession := m.Sessions[arg]; isSession {
+			return nil, fmt.Errorf("%q est une session, pas une instance — stomp ui s'attache à une app (instances: %v)", arg, m.AppNames())
+		}
+		return nil, fmt.Errorf("instance %q introuvable (instances: %v)", arg, m.AppNames())
+	default:
+		names := make([]string, len(byKind))
+		for i, a := range byKind {
+			names[i] = a.Name
+		}
+		sort.Strings(names)
+		return nil, fmt.Errorf("plusieurs instances de kind %q: préciser le nom (%v)", arg, names)
+	}
 }

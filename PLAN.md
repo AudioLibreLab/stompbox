@@ -35,7 +35,7 @@ stomp render   → génère les units systemd depuis le manifeste YAML
 stomp apply    → render + copie dans ~/.config/systemd/user + daemon-reload
 stomp on/off   → start/stop des targets de session
 stomp status   → état des sessions
-stomp gui      → lance l'IHM d'une app (ex: slgui attaché au moteur)
+stomp ui       → lance l'IHM d'une app (ex: slgui attaché au moteur)
 stomp serve    → serveur web (UI embarquée via embed.FS)
 ```
 
@@ -50,7 +50,6 @@ sessions:
         name: clean
         preset: presets/clean.carla
         osc_tcp_port: 1455      # explicite — pas d'arithmétique sur %i
-        gui: false
       - kind: hydrogen
         name: bossa_groove
         song: songs/bossa.h2song
@@ -128,7 +127,7 @@ devient presque indifférent.
 ### IHM des apps : pas dans systemd
 
 `slgui` (et les GUIs Carla) sont des clients jetables : on les ouvre pour
-régler, on les ferme, le moteur continue. Exposé via `stomp gui <instance>`.
+régler, on les ferme, le moteur continue. Exposé via `stomp ui <instance>`.
 
 ## 4. Phasage
 
@@ -203,6 +202,6 @@ déboguer. Tests golden sur le rendu des units (YAML → texte).
   valider en phase 0 (sinon : le laisser en fenêtre normale sur un autre
   workspace, ou extension AppIndicator).
 - Hydrogen installé en 1.2.0-**beta** (2024) → à mettre à jour.
-- OSC SooperLooper en **UDP** vs Carla en TCP : `stomp gui` et les contrôles
+- OSC SooperLooper en **UDP** vs Carla en TCP : `stomp ui` et les contrôles
   web devront gérer les deux.
 - Tkinter abandonné au profit du web — plus de question XWayland.

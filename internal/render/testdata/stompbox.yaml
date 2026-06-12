@@ -6,7 +6,6 @@ sessions:
         name: clean
         preset: presets/clean.carla
         osc_tcp_port: 1455
-        gui: false
       - kind: hydrogen
         name: bossa_groove
         song: songs/bossa.h2song
@@ -26,7 +25,6 @@ sessions:
       - kind: carla
         name: dirty
         preset: /abs/path/dirty.carla
-        gui: true
       - kind: sooperlooper
         name: jam_looper
         # défauts: osc_port 9951 interdit (dupliqué) → port explicite

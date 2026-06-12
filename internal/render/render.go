@@ -140,12 +140,7 @@ func envContent(pairs ...kv) string {
 func envFile(m *manifest.Manifest, a *manifest.App) (File, error) {
 	switch a.Kind {
 	case manifest.KindCarla:
-		flags := "--no-gui"
-		if a.GUI {
-			flags = ""
-		}
 		pairs := []kv{
-			{"CARLA_FLAGS", flags},
 			{"CARLA_PRESET", m.Resolve(a.Preset)},
 		}
 		if a.OSCTCPPort != 0 {

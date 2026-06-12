@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE CARLA-PROJECT>
+<!-- Profil funk : compresseur → Ratatouille (NAM ampli + IR baffle) → chorus.
+     Modèle NAM et IR pointés en chemin absolu (paramètres patch:writable de
+     Ratatouille sérialisés par Carla en CustomData atom:Path).
+     Câblage interne mono jusqu'au chorus, qui ouvre le signal en stéréo. -->
+<CARLA-PROJECT VERSION='2.5'>
+ <EngineSettings>
+  <ForceStereo>false</ForceStereo>
+  <PreferPluginBridges>false</PreferPluginBridges>
+  <PreferUiBridges>true</PreferUiBridges>
+  <UIsAlwaysOnTop>false</UIsAlwaysOnTop>
+  <MaxParameters>200</MaxParameters>
+  <UIBridgesTimeout>4000</UIBridgesTimeout>
+ </EngineSettings>
+
+ <Transport>
+  <BeatsPerMinute>120</BeatsPerMinute>
+ </Transport>
+
+ <!-- Compresseur en tête de chaîne : claque le coup de médiator du funk. -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Gx_compressor</Name>
+   <URI>http://guitarix.sourceforge.net/plugins/gx_compressor#_compressor</URI>
+  </Info>
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x0</Options>
+  </Data>
+ </Plugin>
+
+ <!-- Ratatouille : charge le modèle NAM (ampli) et l'IR (baffle) en une boîte. -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Ratatouille</Name>
+   <URI>urn:brummer:ratatouille</URI>
+  </Info>
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x0</Options>
+
+   <CustomData>
+    <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
+    <Key>urn:brummer:ratatouille#Neural_Model</Key>
+    <Value>/home/fjammes/Music/NAM/AmpHead/APP-6505Plus-Clean-Gain-03.nam</Value>
+   </CustomData>
+   <CustomData>
+    <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
+    <Key>urn:brummer:ratatouille#irfile</Key>
+    <Value>/home/fjammes/Music/IRs/guitar/Fender Tweed Champ 58.wav</Value>
+   </CustomData>
+  </Data>
+ </Plugin>
+
+ <!-- Chorus stéréo Calf : la modulation signature du funk clean. -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Calf Multi Chorus</Name>
+   <URI>http://calf.sourceforge.net/plugins/MultiChorus</URI>
+  </Info>
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x0</Options>
+  </Data>
+ </Plugin>
+
+ <Patchbay>
+  <Connection>
+   <Source>Audio Input:Left</Source>
+   <Target>Gx_compressor:In</Target>
+  </Connection>
+  <Connection>
+   <Source>Gx_compressor:Out</Source>
+   <Target>Ratatouille:In0</Target>
+  </Connection>
+  <Connection>
+   <Source>Ratatouille:Out0</Source>
+   <Target>Calf Multi Chorus:In L</Target>
+  </Connection>
+  <Connection>
+   <Source>Ratatouille:Out0</Source>
+   <Target>Calf Multi Chorus:In R</Target>
+  </Connection>
+  <Connection>
+   <Source>Calf Multi Chorus:Out L</Source>
+   <Target>Audio Output:Left</Target>
+  </Connection>
+  <Connection>
+   <Source>Calf Multi Chorus:Out R</Source>
+   <Target>Audio Output:Right</Target>
+  </Connection>
+  <Positions>
+   <Position x1="1400" y1="1100" pluginId="0">
+    <Name>Gx_compressor</Name>
+   </Position>
+   <Position x1="1650" y1="1100" pluginId="1">
+    <Name>Ratatouille</Name>
+   </Position>
+   <Position x1="1900" y1="1100" pluginId="2">
+    <Name>Calf Multi Chorus</Name>
+   </Position>
+  </Positions>
+ </Patchbay>
+</CARLA-PROJECT>
