@@ -6,6 +6,7 @@ package render
 import (
 	"embed"
 	"fmt"
+	"io/fs"
 	"os"
 	"sort"
 	"strings"
@@ -15,6 +16,9 @@ import (
 
 //go:embed templates/*
 var tmplFS embed.FS
+
+//go:embed wireplumber
+var wireplumberFS embed.FS
 
 // File is a generated artifact. Path is relative to ~/.config:
 // "systemd/user/..." for units, "stompbox/..." for env files.
@@ -41,6 +45,22 @@ func Render(m *manifest.Manifest) ([]File, error) {
 			Path:    "systemd/user/" + e.Name(),
 			Content: string(data),
 		})
+	}
+
+	// Static WirePlumber configs (device fixes, locale-independent descriptions…).
+	// Deployed to ~/.config/wireplumber/… by cmdApply.
+	if err := fs.WalkDir(wireplumberFS, "wireplumber", func(path string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() {
+			return err
+		}
+		data, err := wireplumberFS.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		files = append(files, File{Path: path, Content: string(data)})
+		return nil
+	}); err != nil {
+		return nil, err
 	}
 
 	for _, sName := range m.SessionNames() {

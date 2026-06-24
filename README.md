@@ -59,7 +59,7 @@ All accept `-f <manifest>` (default: `stompbox.yaml`) and `-v` (verbose / debug 
 sessions:
   bossa:
     apps:
-      - kind: carla            # headless host (--no-gui), UI via `stomp ui`
+      - kind: carla            # GUI host (carla <preset>) — window shows plugin UIs; carla-control via `stomp ui`
         name: clean            # optional — default: <session>-<kind> (bossa-carla)
         preset: presets/clean.carla
         osc_tcp_port: 1455     # OSC TCP control (CARLA_OSC_TCP_PORT env)

@@ -47,6 +47,23 @@ sessions:
         looptime: 60
     # patchbay: wire up in qpwgraph then save, as for bossa.
 
+  # Funk bass profile: clean, punchy Ampeg SVT (NAM "Ampeg SVT - MD 421",
+  # mic'd full-rig capture so no IR) for fingerstyle/slap (presets/funk-bass.carxp).
+  funk-bass:
+    apps:
+      - kind: carla
+        preset: presets/funk-bass.carxp
+        osc_tcp_port: 1459
+      - kind: sooperlooper
+        osc_port: 9956
+        loops: 1
+        channels: 2
+        looptime: 60
+        midi_binding: midi/footswitch.slb   # Morningstar MC8 → SooperLooper
+    patchbay:
+      file: patchbays/default.qpwgraph
+      exclusive: false
+
   # Blues profile: edge-of-breakup crunch (NAM Marshall JT100 + IR JCM2000),
   # Tubescreamer → delay pedals (see presets/blues.carxp).
   blues:
@@ -54,11 +71,42 @@ sessions:
       - kind: carla
         preset: presets/blues.carxp
         osc_tcp_port: 1457
+      - kind: hydrogen
+        # name omitted → default "blues-hydrogen"
+        song: songs/homestudio.h2song
       - kind: sooperlooper
+        # name omitted → default "blues-sooperlooper"; UI: stomp ui sooperlooper
         osc_port: 9953
         loops: 1
         channels: 2
         looptime: 60
+        midi_binding: midi/footswitch.slb   # Morningstar MC8 → SooperLooper
+    patchbay:
+      # To create once: wire it up in qpwgraph, save the patchbay here.
+      # The source wiring is documented in patchbays/homestudio.raypatch.xml
+      # (ray-jackpatch export from the old RaySession session).
+      file: patchbays/default.qpwgraph
+      exclusive: false
+
+  # Nylon profile: nylon guitar (see presets/nylon.carxp).
+  nylon:
+    apps:
+      - kind: carla
+        preset: presets/nylon.carxp
+        osc_tcp_port: 1458
+      - kind: hydrogen
+        # name omitted → default "nylon-hydrogen"
+        song: songs/homestudio.h2song
+      - kind: sooperlooper
+        # name omitted → default "nylon-sooperlooper"; UI: stomp ui sooperlooper
+        osc_port: 9955
+        loops: 1
+        channels: 2
+        looptime: 60
+        midi_binding: midi/footswitch.slb   # Morningstar MC8 → SooperLooper
+    patchbay:
+      file: patchbays/default.qpwgraph
+      exclusive: false
 
   # Rock profile: high-gain amp sim (NAM + IR via Ratatouille) with
   # Element instead of Carla as the plugin host (see presets/rock.els).

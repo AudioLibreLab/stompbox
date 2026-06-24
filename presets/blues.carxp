@@ -1,9 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!DOCTYPE CARLA-PROJECT>
-<!-- Blues profile: Tubescreamer (TS9) → Ratatouille (NAM amp + IR cab) → delay.
-     NAM model and IR pointed to via absolute paths (Ratatouille's
-     patch:writable parameters serialized by Carla as CustomData atom:Path).
-     Internal wiring is mono up to the delay, which opens the signal to stereo. -->
 <CARLA-PROJECT VERSION='2.5'>
  <EngineSettings>
   <ForceStereo>false</ForceStereo>
@@ -18,94 +14,672 @@
   <BeatsPerMinute>120</BeatsPerMinute>
  </Transport>
 
- <!-- TS9 up front: the transparent overdrive that pushes the amp into bluesy crunch. -->
+ <!-- GxTubeScreamer -->
  <Plugin>
   <Info>
    <Type>LV2</Type>
    <Name>Gxts9sim</Name>
    <URI>http://guitarix.sourceforge.net/plugins/gxts9#ts9sim</URI>
   </Info>
+
   <Data>
    <Active>Yes</Active>
    <ControlChannel>1</ControlChannel>
    <Options>0x0</Options>
+
+   <Parameter>
+    <Index>0</Index>
+    <Name>Level</Name>
+    <Symbol>fslider0_</Symbol>
+    <Value>-16</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>1</Index>
+    <Name>Tone</Name>
+    <Symbol>fslider1_</Symbol>
+    <Value>400</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>2</Index>
+    <Name>Drive</Name>
+    <Symbol>fslider2_</Symbol>
+    <Value>0.5</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>3</Index>
+    <Name>BYPASS</Name>
+    <Symbol>BYPASS</Symbol>
+    <Value>1</Value>
+   </Parameter>
   </Data>
  </Plugin>
 
- <!-- Ratatouille: loads the NAM model (amp) and the IR (cab) in one box. -->
+ <!-- Ratatouille -->
  <Plugin>
   <Info>
    <Type>LV2</Type>
    <Name>Ratatouille</Name>
    <URI>urn:brummer:ratatouille</URI>
   </Info>
+
   <Data>
    <Active>Yes</Active>
    <ControlChannel>1</ControlChannel>
-   <Options>0x0</Options>
+   <Options>0x1</Options>
+
+   <Parameter>
+    <Index>0</Index>
+    <Name>input</Name>
+    <Symbol>Knob0</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>1</Index>
+    <Name>output</Name>
+    <Symbol>Knob1</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>2</Index>
+    <Name>blend</Name>
+    <Symbol>Knob2</Symbol>
+    <Value>0.5</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>3</Index>
+    <Name>mix</Name>
+    <Symbol>Knob3</Symbol>
+    <Value>0.5</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>4</Index>
+    <Name>Delay</Name>
+    <Symbol>Knob4</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>5</Index>
+    <Name>Normalize A</Name>
+    <Symbol>NormalizeA</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>6</Index>
+    <Name>Normalize B</Name>
+    <Symbol>NormalizeB</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>7</Index>
+    <Name>input1</Name>
+    <Symbol>Knob5</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>8</Index>
+    <Name>Normalize Slot A</Name>
+    <Symbol>NormalizeSlotA</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>9</Index>
+    <Name>Normalize Slot B</Name>
+    <Symbol>NormalizeSlotB</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>10</Index>
+    <Name>enable</Name>
+    <Symbol>ENABLE</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>11</Index>
+    <Name>erase Slot A</Name>
+    <Symbol>eraseSlotA</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>12</Index>
+    <Name>erase Slot B</Name>
+    <Symbol>eraseSlotB</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>13</Index>
+    <Name>erase Ir</Name>
+    <Symbol>eraseIr</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>14</Index>
+    <Name>erase Ir1</Name>
+    <Symbol>eraseIr1</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>16</Index>
+    <Name>Buffered</Name>
+    <Symbol>buffered</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>17</Index>
+    <Name>Phase Correction</Name>
+    <Symbol>phase</Symbol>
+    <Value>0</Value>
+   </Parameter>
 
    <CustomData>
     <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
     <Key>urn:brummer:ratatouille#Neural_Model</Key>
     <Value>/home/fjammes/Music/NAM/AmpHead/amalgam MRSH JT100 I Crunch BAL DI.nam</Value>
    </CustomData>
+
    <CustomData>
     <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
     <Key>urn:brummer:ratatouille#irfile</Key>
     <Value>/home/fjammes/Music/IRs/guitar/Marshall JCM2000 SM57.wav</Value>
    </CustomData>
+
+   <CustomData>
+    <Type>http://lv2plug.in/ns/ext/atom#String</Type>
+    <Key>urn:brummer:ratatouille#Neural_Model1</Key>
+    <Value>None</Value>
+   </CustomData>
+
+   <CustomData>
+    <Type>http://lv2plug.in/ns/ext/atom#String</Type>
+    <Key>urn:brummer:ratatouille#irfile1</Key>
+    <Value>None</Value>
+   </CustomData>
   </Data>
  </Plugin>
 
- <!-- Calf stereo vintage delay: the warm repeats for blues lead. -->
+ <!-- Calf Equalizer 8 Band -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Calf Equalizer 8 Band</Name>
+   <URI>http://calf.sourceforge.net/plugins/Equalizer8Band</URI>
+  </Info>
+
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x3f1</Options>
+
+   <Parameter>
+    <Index>0</Index>
+    <Name>Bypass</Name>
+    <Symbol>bypass</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>1</Index>
+    <Name>Input Gain</Name>
+    <Symbol>level_in</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>2</Index>
+    <Name>Output Gain</Name>
+    <Symbol>level_out</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>11</Index>
+    <Name>HP Active</Name>
+    <Symbol>hp_active</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>12</Index>
+    <Name>HP Freq</Name>
+    <Symbol>hp_freq</Symbol>
+    <Value>86.9491806030273</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>13</Index>
+    <Name>HP Mode</Name>
+    <Symbol>hp_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>14</Index>
+    <Name>HP Q</Name>
+    <Symbol>hp_q</Symbol>
+    <Value>0.707000017166138</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>15</Index>
+    <Name>LP Active</Name>
+    <Symbol>lp_active</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>16</Index>
+    <Name>LP Freq</Name>
+    <Symbol>lp_freq</Symbol>
+    <Value>5499.35595703125</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>17</Index>
+    <Name>LP Mode</Name>
+    <Symbol>lp_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>18</Index>
+    <Name>LP Q</Name>
+    <Symbol>lp_q</Symbol>
+    <Value>0.564936995506287</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>19</Index>
+    <Name>LS Active</Name>
+    <Symbol>ls_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>20</Index>
+    <Name>Level L</Name>
+    <Symbol>ls_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>21</Index>
+    <Name>Freq L</Name>
+    <Symbol>ls_freq</Symbol>
+    <Value>100</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>22</Index>
+    <Name>LS Q</Name>
+    <Symbol>ls_q</Symbol>
+    <Value>0.707000017166138</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>23</Index>
+    <Name>HS Active</Name>
+    <Symbol>hs_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>24</Index>
+    <Name>Level H</Name>
+    <Symbol>hs_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>25</Index>
+    <Name>Freq H</Name>
+    <Symbol>hs_freq</Symbol>
+    <Value>5000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>26</Index>
+    <Name>HS Q</Name>
+    <Symbol>hs_q</Symbol>
+    <Value>0.707000017166138</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>27</Index>
+    <Name>F1 Active</Name>
+    <Symbol>p1_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>28</Index>
+    <Name>Level 1</Name>
+    <Symbol>p1_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>29</Index>
+    <Name>Freq 1</Name>
+    <Symbol>p1_freq</Symbol>
+    <Value>100</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>30</Index>
+    <Name>Q 1</Name>
+    <Symbol>p1_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>31</Index>
+    <Name>F2 Active</Name>
+    <Symbol>p2_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>32</Index>
+    <Name>Level 2</Name>
+    <Symbol>p2_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>33</Index>
+    <Name>Freq 2</Name>
+    <Symbol>p2_freq</Symbol>
+    <Value>500</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>34</Index>
+    <Name>Q 2</Name>
+    <Symbol>p2_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>35</Index>
+    <Name>F3 Active</Name>
+    <Symbol>p3_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>36</Index>
+    <Name>Level 3</Name>
+    <Symbol>p3_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>37</Index>
+    <Name>Freq 3</Name>
+    <Symbol>p3_freq</Symbol>
+    <Value>2000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>38</Index>
+    <Name>Q 3</Name>
+    <Symbol>p3_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>39</Index>
+    <Name>F4 Active</Name>
+    <Symbol>p4_active</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>40</Index>
+    <Name>Level 4</Name>
+    <Symbol>p4_level</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>41</Index>
+    <Name>Freq 4</Name>
+    <Symbol>p4_freq</Symbol>
+    <Value>5000</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>42</Index>
+    <Name>Q 4</Name>
+    <Symbol>p4_q</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>43</Index>
+    <Name>Individual Filters</Name>
+    <Symbol>individuals</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>44</Index>
+    <Name>Zoom</Name>
+    <Symbol>zoom</Symbol>
+    <Value>0.25</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>45</Index>
+    <Name>Analyzer Active</Name>
+    <Symbol>analyzer</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>46</Index>
+    <Name>Analyzer Mode</Name>
+    <Symbol>analyzer_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <CustomData>
+    <Type>http://kxstudio.sf.net/ns/carla/property</Type>
+    <Key>CarlaSkinIsCompacted</Key>
+    <Value>true</Value>
+   </CustomData>
+  </Data>
+ </Plugin>
+
+ <!-- Calf Vintage Delay -->
  <Plugin>
   <Info>
    <Type>LV2</Type>
    <Name>Calf Vintage Delay</Name>
    <URI>http://calf.sourceforge.net/plugins/VintageDelay</URI>
   </Info>
+
   <Data>
    <Active>Yes</Active>
+   <DryWet>0</DryWet>
    <ControlChannel>1</ControlChannel>
-   <Options>0x0</Options>
+   <Options>0x1</Options>
+
+   <Parameter>
+    <Index>0</Index>
+    <Name>Active</Name>
+    <Symbol>on</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>1</Index>
+    <Name>Input Gain</Name>
+    <Symbol>level_in</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>2</Index>
+    <Name>Output Gain</Name>
+    <Symbol>level_out</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>11</Index>
+    <Name>Subdivide</Name>
+    <Symbol>subdiv</Symbol>
+    <Value>4</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>12</Index>
+    <Name>Time L</Name>
+    <Symbol>time_l</Symbol>
+    <Value>3</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>13</Index>
+    <Name>Time R</Name>
+    <Symbol>time_r</Symbol>
+    <Value>5</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>14</Index>
+    <Name>Feedback</Name>
+    <Symbol>feedback</Symbol>
+    <Value>0.5</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>15</Index>
+    <Name>Wet</Name>
+    <Symbol>amount</Symbol>
+    <Value>0.25</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>16</Index>
+    <Name>Mix mode</Name>
+    <Symbol>mix_mode</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>17</Index>
+    <Name>Medium</Name>
+    <Symbol>medium</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>18</Index>
+    <Name>Dry</Name>
+    <Symbol>dry</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>19</Index>
+    <Name>Stereo Width</Name>
+    <Symbol>width</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>20</Index>
+    <Name>Fragmentation</Name>
+    <Symbol>fragmentation</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>21</Index>
+    <Name>Pattern Beats</Name>
+    <Symbol>pbeats</Symbol>
+    <Value>4</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>22</Index>
+    <Name>Pattern Fragmentation</Name>
+    <Symbol>pfrag</Symbol>
+    <Value>4</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>23</Index>
+    <Name>Timing</Name>
+    <Symbol>timing</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>24</Index>
+    <Name>BPM</Name>
+    <Symbol>bpm</Symbol>
+    <Value>120</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>25</Index>
+    <Name>ms</Name>
+    <Symbol>ms</Symbol>
+    <Value>500</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>26</Index>
+    <Name>Frequency</Name>
+    <Symbol>hz</Symbol>
+    <Value>2</Value>
+   </Parameter>
+
+   <CustomData>
+    <Type>http://kxstudio.sf.net/ns/carla/property</Type>
+    <Key>CarlaSkinIsCompacted</Key>
+    <Value>false</Value>
+   </CustomData>
   </Data>
  </Plugin>
 
- <Patchbay>
+ <ExternalPatchbay>
   <Connection>
-   <Source>Audio Input:Left</Source>
-   <Target>Gxts9sim:in</Target>
+   <Source>Scarlett 2i2 3rd Gen Analog Stereo:capture_FL</Source>
+   <Target>Carla:audio-in1</Target>
   </Connection>
   <Connection>
-   <Source>Gxts9sim:Out</Source>
-   <Target>Ratatouille:In0</Target>
+   <Source>Carla:audio-out1</Source>
+   <Target>Scarlett 2i2 3rd Gen Analog Stereo:playback_FL</Target>
   </Connection>
   <Connection>
-   <Source>Ratatouille:Out0</Source>
-   <Target>Calf Vintage Delay:In L</Target>
+   <Source>Hydrogen:out_L</Source>
+   <Target>Scarlett 2i2 3rd Gen Analog Stereo:playback_FL</Target>
   </Connection>
   <Connection>
-   <Source>Ratatouille:Out0</Source>
-   <Target>Calf Vintage Delay:In R</Target>
+   <Source>Hydrogen:out_R</Source>
+   <Target>Scarlett 2i2 3rd Gen Analog Stereo:playback_FR</Target>
   </Connection>
-  <Connection>
-   <Source>Calf Vintage Delay:Out L</Source>
-   <Target>Audio Output:Left</Target>
-  </Connection>
-  <Connection>
-   <Source>Calf Vintage Delay:Out R</Source>
-   <Target>Audio Output:Right</Target>
-  </Connection>
-  <Positions>
-   <Position x1="1400" y1="1100" pluginId="0">
-    <Name>Gxts9sim</Name>
-   </Position>
-   <Position x1="1650" y1="1100" pluginId="1">
-    <Name>Ratatouille</Name>
-   </Position>
-   <Position x1="1900" y1="1100" pluginId="2">
-    <Name>Calf Vintage Delay</Name>
-   </Position>
-  </Positions>
- </Patchbay>
+ </ExternalPatchbay>
 </CARLA-PROJECT>

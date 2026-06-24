@@ -16,6 +16,9 @@ import (
 	"github.com/AudioLibreLab/stompbox/internal/systemd"
 )
 
+// version is stamped at build time via -ldflags "-X main.version=…" (see Makefile).
+var version = "dev"
+
 const usage = `stomp — Audio as Code for a personal studio (PipeWire + systemd user)
 
 Usage: stomp <command> [options]
@@ -27,6 +30,7 @@ Commands:
   off      Stop a session (or all): stomp off [session]
   status   State of the sessions and their apps
   ui       Open an instance's UI:  stomp ui <instance|kind>
+  version  Print the stomp version
 
 Common options:
   -f <file>   Manifest (default: stompbox.yaml)
@@ -52,6 +56,8 @@ func main() {
 		err = cmdStatus(args)
 	case "ui":
 		err = cmdUI(args)
+	case "version", "--version":
+		fmt.Println(version)
 	case "help", "-h", "--help":
 		fmt.Print(usage)
 	default:
@@ -149,6 +155,9 @@ func cmdApply(args []string) error {
 	sd := &systemd.Client{}
 	if err := sd.DaemonReload(); err != nil {
 		return err
+	}
+	if err := sd.RestartWirePlumber(); err != nil {
+		slog.Warn("wireplumber restart failed (not running?)", "err", err)
 	}
 	fmt.Printf("stomp: %d files installed in %s, units reloaded\n", len(files), confDir)
 	for _, s := range m.SessionNames() {
@@ -263,7 +272,7 @@ func cmdUI(args []string) error {
 		if app.OSCTCPPort == 0 {
 			return fmt.Errorf("carla %q: 'osc_tcp_port' required in the manifest to attach carla-control", app.Name)
 		}
-		// The UI is throwaway: closing it doesn't affect the headless host.
+		// The UI is throwaway: closing it doesn't affect the Carla host.
 		cmd := exec.Command("carla-control", fmt.Sprintf("osc.tcp://127.0.0.1:%d/Carla", app.OSCTCPPort))
 		if err := cmd.Start(); err != nil {
 			return err

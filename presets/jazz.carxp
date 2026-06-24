@@ -453,6 +453,12 @@
     <Key>http://github.com/mikeoliphant/neural-amp-modeler-lv2#model</Key>
     <Value>Roland JC 120B Jazz Chorus_ Bright Off, Royer 101.nam</Value>
    </CustomData>
+
+   <CustomData>
+    <Type>http://kxstudio.sf.net/ns/carla/property</Type>
+    <Key>CarlaSkinIsCompacted</Key>
+    <Value>false</Value>
+   </CustomData>
   </Data>
  </Plugin>
 
@@ -487,7 +493,7 @@
     <Index>2</Index>
     <Name>Output Gain</Name>
     <Symbol>level_out</Symbol>
-    <Value>0.435275197029114</Value>
+    <Value>4.32289934158325</Value>
    </Parameter>
 
    <Parameter>
@@ -522,14 +528,14 @@
     <Index>15</Index>
     <Name>LP Active</Name>
     <Symbol>lp_active</Symbol>
-    <Value>0</Value>
+    <Value>1</Value>
    </Parameter>
 
    <Parameter>
     <Index>16</Index>
     <Name>LP Freq</Name>
     <Symbol>lp_freq</Symbol>
-    <Value>18000</Value>
+    <Value>7683.4658203125</Value>
    </Parameter>
 
    <Parameter>
@@ -543,7 +549,7 @@
     <Index>18</Index>
     <Name>LP Q</Name>
     <Symbol>lp_q</Symbol>
-    <Value>0.707000017166138</Value>
+    <Value>0.308616727590561</Value>
    </Parameter>
 
    <Parameter>
@@ -856,67 +862,22 @@
   </Data>
  </Plugin>
 
- <Patchbay>
-  <Connection>
-   <Source>Calf Equalizer 12 Band:Out L</Source>
-   <Target>Audio Output:Left</Target>
-  </Connection>
-  <Connection>
-   <Source>Calf Equalizer 12 Band:Out R</Source>
-   <Target>Audio Output:Right</Target>
-  </Connection>
-  <Connection>
-   <Source>Neural Amp Modeler:Output</Source>
-   <Target>Calf Equalizer 12 Band:In L</Target>
-  </Connection>
-  <Connection>
-   <Source>Neural Amp Modeler:Output</Source>
-   <Target>Calf Equalizer 12 Band:In R</Target>
-  </Connection>
-  <Connection>
-   <Source>Audio Input:Left</Source>
-   <Target>Calf Equalizer 12 Band (2):In L</Target>
-  </Connection>
-  <Connection>
-   <Source>Audio Input:Left</Source>
-   <Target>Calf Equalizer 12 Band (2):In R</Target>
-  </Connection>
-  <Connection>
-   <Source>Calf Equalizer 12 Band (2):Out L</Source>
-   <Target>Neural Amp Modeler:Input</Target>
-  </Connection>
-  <Connection>
-   <Source>Calf Equalizer 12 Band (2):Out R</Source>
-   <Target>Neural Amp Modeler:Input</Target>
-  </Connection>
-  <Positions>
-   <Position x1="1598" y1="1236" pluginId="2">
-    <Name>Calf Equalizer 12 Band (2)</Name>
-   </Position>
-   <Position x1="1862" y1="1034" pluginId="1">
-    <Name>Neural Amp Modeler</Name>
-   </Position>
-   <Position x1="1729" y1="1617" pluginId="0">
-    <Name>Calf Equalizer 12 Band</Name>
-   </Position>
-   <Position x1="1406" y1="1142" x2="1952" y2="1200">
-    <Name>Audio Input</Name>
-   </Position>
-  </Positions>
- </Patchbay>
-
  <ExternalPatchbay>
   <Connection>
-   <Source>Scarlett 2i2 3rd Gen Stéréo analogique:capture_FL</Source>
-   <Target>Carla-Patchbay_5:audio-in1</Target>
+   <Source>Scarlett 2i2 3rd Gen Analog Stereo:capture_FL</Source>
+   <Target>Carla:audio-in1</Target>
   </Connection>
   <Connection>
-   <Source>Carla-Patchbay_5:audio-out1</Source>
-   <Target>Scarlett 2i2 3rd Gen Stéréo analogique:playback_FL</Target>
+   <Source>Hydrogen:out_L</Source>
+   <Target>Scarlett 2i2 3rd Gen Analog Stereo:playback_FL</Target>
   </Connection>
   <Connection>
-   <Source>Carla-Patchbay_5:audio-out2</Source>
-   <Target>Scarlett 2i2 3rd Gen Stéréo analogique:playback_FR</Target>
+   <Source>Hydrogen:out_R</Source>
+   <Target>Scarlett 2i2 3rd Gen Analog Stereo:playback_FR</Target>
+  </Connection>
+  <Connection>
+   <Source>Carla:audio-out1</Source>
+   <Target>Scarlett 2i2 3rd Gen Analog Stereo:playback_FL</Target>
   </Connection>
  </ExternalPatchbay>
 </CARLA-PROJECT>

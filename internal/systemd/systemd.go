@@ -35,6 +35,11 @@ func (c *Client) DaemonReload() error {
 	return c.run("daemon-reload")
 }
 
+// RestartWirePlumber restarts wireplumber so freshly deployed configs take effect.
+func (c *Client) RestartWirePlumber() error {
+	return c.run("restart", "wireplumber")
+}
+
 // Start starts a unit (typically a session .target).
 func (c *Client) Start(unit string) error {
 	return c.run("start", unit)

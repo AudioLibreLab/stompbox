@@ -14,7 +14,8 @@
   <BeatsPerMinute>120</BeatsPerMinute>
  </Transport>
 
- <!-- Neural Amp Modeler -->
+ <!-- Bass: Ampeg SVT "Ultra Lo" (mic'd full-rig NAM capture, cab baked in
+      → no separate IR), deep low end, voiced by the Calf EQ below. -->
  <Plugin>
   <Info>
    <Type>LV2</Type>
@@ -49,9 +50,9 @@
    </Parameter>
 
    <CustomData>
-    <Type>http://kxstudio.sf.net/ns/carla/property</Type>
-    <Key>CarlaSkinIsCompacted</Key>
-    <Value>false</Value>
+    <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
+    <Key>http://github.com/mikeoliphant/neural-amp-modeler-lv2#model</Key>
+    <Value>/home/fjammes/Music/NAM/bass/Ampeg SVT - Ultra Lo MD 421.nam</Value>
    </CustomData>
   </Data>
  </Plugin>
@@ -456,121 +457,20 @@
   </Data>
  </Plugin>
 
- <!-- Neural Amp Modeler -->
- <Plugin>
-  <Info>
-   <Type>LV2</Type>
-   <Name>Neural Amp Modeler (2)</Name>
-   <URI>http://github.com/mikeoliphant/neural-amp-modeler-lv2</URI>
-  </Info>
-
-  <Data>
-   <Active>Yes</Active>
-   <ControlChannel>1</ControlChannel>
-   <Options>0x0</Options>
-
-   <Parameter>
-    <Index>0</Index>
-    <Name>Input Lvl</Name>
-    <Symbol>input_level</Symbol>
-    <Value>0</Value>
-   </Parameter>
-
-   <Parameter>
-    <Index>1</Index>
-    <Name>Output Lvl</Name>
-    <Symbol>output_level</Symbol>
-    <Value>0</Value>
-   </Parameter>
-
-   <Parameter>
-    <Index>2</Index>
-    <Name>Quality</Name>
-    <Symbol>quality_scale</Symbol>
-    <Value>1</Value>
-   </Parameter>
-  </Data>
- </Plugin>
-
- <!-- Neural Amp Modeler -->
- <Plugin>
-  <Info>
-   <Type>LV2</Type>
-   <Name>Neural Amp Modeler (3)</Name>
-   <URI>http://github.com/mikeoliphant/neural-amp-modeler-lv2</URI>
-  </Info>
-
-  <Data>
-   <Active>Yes</Active>
-   <ControlChannel>1</ControlChannel>
-   <Options>0x0</Options>
-
-   <Parameter>
-    <Index>0</Index>
-    <Name>Input Lvl</Name>
-    <Symbol>input_level</Symbol>
-    <Value>0</Value>
-   </Parameter>
-
-   <Parameter>
-    <Index>1</Index>
-    <Name>Output Lvl</Name>
-    <Symbol>output_level</Symbol>
-    <Value>0</Value>
-   </Parameter>
-
-   <Parameter>
-    <Index>2</Index>
-    <Name>Quality</Name>
-    <Symbol>quality_scale</Symbol>
-    <Value>1</Value>
-   </Parameter>
-  </Data>
- </Plugin>
-
- <!-- Neural Amp Modeler -->
- <Plugin>
-  <Info>
-   <Type>LV2</Type>
-   <Name>Neural Amp Modeler (4)</Name>
-   <URI>http://github.com/mikeoliphant/neural-amp-modeler-lv2</URI>
-  </Info>
-
-  <Data>
-   <Active>Yes</Active>
-   <ControlChannel>1</ControlChannel>
-   <Options>0x0</Options>
-
-   <Parameter>
-    <Index>0</Index>
-    <Name>Input Lvl</Name>
-    <Symbol>input_level</Symbol>
-    <Value>0</Value>
-   </Parameter>
-
-   <Parameter>
-    <Index>1</Index>
-    <Name>Output Lvl</Name>
-    <Symbol>output_level</Symbol>
-    <Value>0</Value>
-   </Parameter>
-
-   <Parameter>
-    <Index>2</Index>
-    <Name>Quality</Name>
-    <Symbol>quality_scale</Symbol>
-    <Value>1</Value>
-   </Parameter>
-
-   <CustomData>
-    <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
-    <Key>http://github.com/mikeoliphant/neural-amp-modeler-lv2#model</Key>
-    <Value>Ampeg SVT - Ultra Lo MD 421.nam</Value>
-   </CustomData>
-  </Data>
- </Plugin>
-
+ <!-- Internal routing: mono in → NAM → Calf EQ → both output channels. -->
  <Patchbay>
+  <Connection>
+   <Source>Audio Input:Left</Source>
+   <Target>Neural Amp Modeler:Input</Target>
+  </Connection>
+  <Connection>
+   <Source>Neural Amp Modeler:Output</Source>
+   <Target>Calf Equalizer 12 Band:In L</Target>
+  </Connection>
+  <Connection>
+   <Source>Neural Amp Modeler:Output</Source>
+   <Target>Calf Equalizer 12 Band:In R</Target>
+  </Connection>
   <Connection>
    <Source>Calf Equalizer 12 Band:Out L</Source>
    <Target>Audio Output:Left</Target>
@@ -579,51 +479,5 @@
    <Source>Calf Equalizer 12 Band:Out R</Source>
    <Target>Audio Output:Right</Target>
   </Connection>
-  <Connection>
-   <Source>Neural Amp Modeler (4):Output</Source>
-   <Target>Calf Equalizer 12 Band:In L</Target>
-  </Connection>
-  <Connection>
-   <Source>Neural Amp Modeler (4):Output</Source>
-   <Target>Calf Equalizer 12 Band:In R</Target>
-  </Connection>
-  <Connection>
-   <Source>Audio Input:Left</Source>
-   <Target>Neural Amp Modeler (4):Input</Target>
-  </Connection>
-  <Positions>
-   <Position x1="1635" y1="1360" pluginId="1">
-    <Name>Calf Equalizer 12 Band</Name>
-   </Position>
-   <Position x1="1014" y1="1498" x2="1943" y2="1355">
-    <Name>Midi Input</Name>
-   </Position>
-   <Position x1="1048" y1="1315" x2="1952" y2="1200">
-    <Name>Audio Input</Name>
-   </Position>
-  </Positions>
  </Patchbay>
-
- <ExternalPatchbay>
-  <Connection>
-   <Source>Scarlett 2i2 3rd Gen Stéréo analogique:capture_FL</Source>
-   <Target>Carla-Patchbay_6:audio-in1</Target>
-  </Connection>
-  <Connection>
-   <Source>Carla-Patchbay_6:audio-out1</Source>
-   <Target>Scarlett 2i2 3rd Gen Stéréo analogique:playback_FL</Target>
-  </Connection>
-  <Connection>
-   <Source>Carla-Patchbay_6:audio-out2</Source>
-   <Target>Scarlett 2i2 3rd Gen Stéréo analogique:playback_FR</Target>
-  </Connection>
-  <Connection>
-   <Source>Google Chrome:output_FL</Source>
-   <Target>Scarlett 2i2 3rd Gen Stéréo analogique:playback_FL</Target>
-  </Connection>
-  <Connection>
-   <Source>Google Chrome:output_FR</Source>
-   <Target>Scarlett 2i2 3rd Gen Stéréo analogique:playback_FR</Target>
-  </Connection>
- </ExternalPatchbay>
 </CARLA-PROJECT>

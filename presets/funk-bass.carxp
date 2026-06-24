@@ -1,0 +1,75 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE CARLA-PROJECT>
+<CARLA-PROJECT VERSION='2.5'>
+ <EngineSettings>
+  <ForceStereo>false</ForceStereo>
+  <PreferPluginBridges>false</PreferPluginBridges>
+  <PreferUiBridges>true</PreferUiBridges>
+  <UIsAlwaysOnTop>false</UIsAlwaysOnTop>
+  <MaxParameters>200</MaxParameters>
+  <UIBridgesTimeout>4000</UIBridgesTimeout>
+ </EngineSettings>
+
+ <Transport>
+  <BeatsPerMinute>120</BeatsPerMinute>
+ </Transport>
+
+ <!-- Funk bass: clean, punchy Ampeg SVT (mic'd full-rig NAM capture, cab
+      baked in → no separate IR). MD 421 mic = full low-mids, tight lows. -->
+ <Plugin>
+  <Info>
+   <Type>LV2</Type>
+   <Name>Neural Amp Modeler</Name>
+   <URI>http://github.com/mikeoliphant/neural-amp-modeler-lv2</URI>
+  </Info>
+
+  <Data>
+   <Active>Yes</Active>
+   <ControlChannel>1</ControlChannel>
+   <Options>0x0</Options>
+
+   <Parameter>
+    <Index>0</Index>
+    <Name>Input Lvl</Name>
+    <Symbol>input_level</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>1</Index>
+    <Name>Output Lvl</Name>
+    <Symbol>output_level</Symbol>
+    <Value>0</Value>
+   </Parameter>
+
+   <Parameter>
+    <Index>2</Index>
+    <Name>Quality</Name>
+    <Symbol>quality_scale</Symbol>
+    <Value>1</Value>
+   </Parameter>
+
+   <CustomData>
+    <Type>http://lv2plug.in/ns/ext/atom#Path</Type>
+    <Key>http://github.com/mikeoliphant/neural-amp-modeler-lv2#model</Key>
+    <Value>/home/fjammes/Music/NAM/bass/Ampeg SVT - MD 421.nam</Value>
+   </CustomData>
+  </Data>
+ </Plugin>
+
+ <!-- Internal routing: mono in → NAM → both output channels (mono NAM). -->
+ <Patchbay>
+  <Connection>
+   <Source>Audio Input:Left</Source>
+   <Target>Neural Amp Modeler:Input</Target>
+  </Connection>
+  <Connection>
+   <Source>Neural Amp Modeler:Output</Source>
+   <Target>Audio Output:Left</Target>
+  </Connection>
+  <Connection>
+   <Source>Neural Amp Modeler:Output</Source>
+   <Target>Audio Output:Right</Target>
+  </Connection>
+ </Patchbay>
+</CARLA-PROJECT>
