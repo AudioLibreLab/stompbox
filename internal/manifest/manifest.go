@@ -27,6 +27,9 @@ type Manifest struct {
 	// Dir is the absolute directory containing the manifest;
 	// relative paths in the manifest are resolved against it.
 	Dir string `yaml:"-"`
+
+	// Path is the manifest's absolute path, with symlinks resolved.
+	Path string `yaml:"-"`
 }
 
 // Session describes a set of applications and their wiring.
@@ -84,6 +87,12 @@ func Load(path string) (*Manifest, error) {
 	if err != nil {
 		return nil, err
 	}
+	// Follow symlinks so a manifest linked into ~/.config still resolves its
+	// relative paths (presets, songs…) against the repository it lives in.
+	if resolved, err := filepath.EvalSymlinks(abs); err == nil {
+		abs = resolved
+	}
+	m.Path = abs
 	m.Dir = filepath.Dir(abs)
 	m.applyDefaults()
 	if err := m.Validate(); err != nil {

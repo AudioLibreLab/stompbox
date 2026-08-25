@@ -19,6 +19,9 @@ import (
 // version is stamped at build time via -ldflags "-X main.version=…" (see Makefile).
 var version = "dev"
 
+// manifestName is the manifest's conventional file name.
+const manifestName = "stompbox.yaml"
+
 const usage = `stomp — Audio as Code for a personal studio (PipeWire + systemd user)
 
 Usage: stomp <command> [options]
@@ -33,7 +36,10 @@ Commands:
   version  Print the stomp version
 
 Common options:
-  -f <file>   Manifest (default: stompbox.yaml)
+  -f <file>   Manifest. Default lookup order:
+                $STOMPBOX_MANIFEST
+                ./stompbox.yaml
+                ~/.config/stompbox/stompbox.yaml
   -v          Verbose logging (debug level)
 `
 
@@ -89,15 +95,47 @@ func setupLogging(verbose bool) {
 	slog.SetDefault(slog.New(h))
 }
 
+// userManifestPath returns the manifest's XDG location,
+// ~/.config/stompbox/stompbox.yaml (honouring $XDG_CONFIG_HOME).
+func userManifestPath() string {
+	dir, err := os.UserConfigDir()
+	if err != nil {
+		return ""
+	}
+	return filepath.Join(dir, "stompbox", manifestName)
+}
+
+// defaultManifestPath picks the manifest to use when -f is not given:
+// $STOMPBOX_MANIFEST, then ./stompbox.yaml, then the XDG location. This lets
+// stomp be driven from anywhere (scripts, launchers) once the manifest is
+// installed — or symlinked — into ~/.config/stompbox.
+func defaultManifestPath() string {
+	if p := os.Getenv("STOMPBOX_MANIFEST"); p != "" {
+		return p
+	}
+	if _, err := os.Stat(manifestName); err == nil {
+		return manifestName
+	}
+	if p := userManifestPath(); p != "" {
+		if _, err := os.Stat(p); err == nil {
+			return p
+		}
+	}
+	return manifestName
+}
+
 // loadManifest declares the common -f/-v flags on a FlagSet, parses args,
 // configures logging and loads the manifest.
 func loadManifest(fs *flag.FlagSet, args []string) (*manifest.Manifest, error) {
-	path := fs.String("f", "stompbox.yaml", "manifest path")
+	path := fs.String("f", "", "manifest path (default: $STOMPBOX_MANIFEST, ./"+manifestName+", ~/.config/stompbox/"+manifestName+")")
 	verbose := fs.Bool("v", false, "verbose logging (debug level)")
 	if err := fs.Parse(args); err != nil {
 		return nil, err
 	}
 	setupLogging(*verbose)
+	if *path == "" {
+		*path = defaultManifestPath()
+	}
 	slog.Debug("loading manifest", "path", *path)
 	m, err := manifest.Load(*path)
 	if err != nil {
@@ -152,6 +190,9 @@ func cmdApply(args []string) error {
 			return err
 		}
 	}
+	if err := linkUserManifest(m.Path); err != nil {
+		slog.Warn("could not link the manifest into ~/.config", "err", err)
+	}
 	sd := &systemd.Client{}
 	if err := sd.DaemonReload(); err != nil {
 		return err
@@ -163,6 +204,36 @@ func cmdApply(args []string) error {
 	for _, s := range m.SessionNames() {
 		fmt.Printf("  session %-20s → stomp on %s\n", s, s)
 	}
+	return nil
+}
+
+// linkUserManifest points ~/.config/stompbox/stompbox.yaml at the manifest
+// just applied, so `stomp on/off/status` work from any directory. A symlink
+// (not a copy) keeps the manifest and its presets in sync with the repository.
+func linkUserManifest(src string) error {
+	dst := userManifestPath()
+	if dst == "" || src == "" || dst == src {
+		return nil
+	}
+	if err := os.MkdirAll(filepath.Dir(dst), 0o755); err != nil {
+		return err
+	}
+	if target, err := os.Readlink(dst); err == nil && target == src {
+		return nil
+	} else if err == nil {
+		// Stale symlink: repoint it.
+	} else if _, err := os.Lstat(dst); err == nil {
+		// A real file lives there: leave the user's own manifest alone.
+		slog.Debug("keeping the existing manifest in ~/.config", "path", dst)
+		return nil
+	}
+	if err := os.Remove(dst); err != nil && !os.IsNotExist(err) {
+		return err
+	}
+	if err := os.Symlink(src, dst); err != nil {
+		return err
+	}
+	slog.Debug("manifest linked", "from", dst, "to", src)
 	return nil
 }
 
