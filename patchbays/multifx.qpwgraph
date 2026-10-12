@@ -1,0 +1,21 @@
+<!DOCTYPE patchbay>
+<patchbay version="0.6.1" name="multifx">
+ <items>
+  <item port-type="pipewire-audio" node-type="pipewire">
+   <output port="Scarlett 2i2 USB:capture_FL" node="Scarlett 2i2 3rd Gen Analog Stereo"/>
+   <input port="Carla:audio-in1" node="Carla"/>
+  </item>
+  <item port-type="pipewire-audio" node-type="pipewire">
+   <output port="Scarlett 2i2 USB:capture_FL" node="Scarlett 2i2 3rd Gen Analog Stereo"/>
+   <input port="Carla:audio-in2" node="Carla"/>
+  </item>
+  <item port-type="pipewire-audio" node-type="pipewire">
+   <output port="Carla:audio-out1" node="Carla"/>
+   <input port="Scarlett 2i2 USB:playback_FL" node="Scarlett 2i2 3rd Gen Analog Stereo"/>
+  </item>
+  <item port-type="pipewire-audio" node-type="pipewire">
+   <output port="Carla:audio-out2" node="Carla"/>
+   <input port="Scarlett 2i2 USB:playback_FR" node="Scarlett 2i2 3rd Gen Analog Stereo"/>
+  </item>
+ </items>
+</patchbay>

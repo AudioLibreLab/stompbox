@@ -108,6 +108,19 @@ sessions:
       file: patchbays/default.qpwgraph
       exclusive: false
 
+  # Multi-FX profile: the hardware multi-effect does the sound (mono into
+  # Scarlett input 1). Carla (rack mode, no plugin: in1→out1, in2→out2) is a plain
+  # passthrough (presets/bypass.carxp); the patchbay feeds Scarlett input 1 into
+  # both Carla inputs so JamCapture can record Carla:audio-out1/2 ("carla" config).
+  multifx:
+    apps:
+      - kind: carla
+        preset: presets/bypass.carxp
+        osc_tcp_port: 1460
+    patchbay:
+      file: patchbays/multifx.qpwgraph
+      exclusive: false
+
   # Rock profile: high-gain amp sim (NAM + IR via Ratatouille) with
   # Element instead of Carla as the plugin host (see presets/rock.els).
   rock:
